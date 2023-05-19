@@ -1,0 +1,216 @@
+PROGRAMA UN ASISTENTE DE VOZ
+----------------------------
+
+INSTALAR BIBLIOTECAS
+--------------------
+
+import pyttsx3      ---->
+import speech_recognition as sr     --->    transforma audio en texto
+import pywhatkit        --->
+import yfinance as yf   ---> finanzas
+import pyjokes          ---> chistes
+import webbrowser       ---> navegador
+import datetime
+import wikipedia
+
+
+TRANSFORMAR VOZ EN TEXTO
+------------------------
+
+# escuchar nuestro microfono audio en texto
+def transformar_audio_en_texto():
+    # almacenamos el reconocedor en una variable
+    r = sr.Recognizer()
+
+    # configuramos el microfono
+    with sr.Microphone() as origen: ---> le decimos que vamos a trabajar con microfono
+
+        # tiempo de espera que necesita el microfono
+        r.pause_threshold = 0.8
+
+        # informamos si comenzó a grabar
+        print('Se esta grabando')
+
+        # guardar lo que escuche
+        audio = r.listen(origen)
+
+        # si hay errores
+        try:
+            #buscar en google lo que ha escuchado
+            pedido = r.recognize_google(audio, language="es-es")    ---> le ponemos el tipo de español
+
+            # imprimir en pantalla para ver que ha grabado
+            print('Dijiste: '+pedido)
+
+            # devolver a pedido
+            return pedido
+        # en caso que no comprenda
+        except sr.UnknownValueError:
+            print('No comprendió el audio')
+            #devuelve el error
+            return 'sigo esperando'
+        #en caso de no devolver el pedido
+        except sr.RequestError:
+            # prueba que no comprendio el audio
+            print('UPS, no he entendido nada')
+            return 'sigo esperando'
+
+        #error inexperado
+        except:
+            #prueba de que no comprende el audio
+            print('Algo ha salido mal')
+            return 'sigo todavia esperando'
+
+transformar_audio_en_texto()
+
+TRANSFORMAR EL TEXTO EN VOZ
+---------------------------
+
+def hablar(mensaje):
+    # encender el motor de pyttsx3
+    engine = pyttsx3.init() ---> por convención se llama a motor engine
+
+    #pronunciar mensaje
+    engine.say(mensaje) ---> diga el mensaje
+    engine.runAndWait() ---> arranca y espera
+
+CONFIGURAR IDIOMA
+-----------------
+
+engine = pyttsx3.init()
+for voz in engine.getProperty('voices'):
+    print(voz)
+
+con esto saldrá las voces que tienes instaladas en windows
+
+def hablar(mensaje):
+    # encender el motor de pyttsx3
+    engine = pyttsx3.init()
+    engine.setProperty('voice', id2)    ---> aquí ponemos cual vamos a elegir de voz de asistente
+
+    #pronunciar mensaje
+    engine.say(mensaje)
+    engine.runAndWait()
+
+#vamos a crear una base de datos para las diferentes fuentes que tengo ...
+
+id1 = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_ES-ES_HELENA_11.0'
+id2 = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0'
+
+
+CONSULTAR EL DÍA
+----------------
+
+def pedir_dia():
+
+    #crear la variable de datos de hoy
+    dia = datetime.date.today()
+    dia_semana= dia.weekday()   ---> el valor que da es un número que habrá que transformar en día
+
+    #diccionario del dia de la semana
+    calendario = {0: 'Lunes',
+                  1: 'Martes',
+                  2: 'Miércoles',
+                  3: 'Jueves',
+                  4: 'Viernes',
+                  5: 'Sabado',
+                  6: 'Domingo'}
+
+    #decir el día de la semana
+    hablar(f'Hoy es {calendario[dia_semana]}')
+    print(f'{calendario[dia_semana]},{dia}')
+
+CONSULTAR LA HORA
+-----------------
+
+def pedir_hora():
+    #pedir hora
+    hora = datetime.datetime.now()
+    hora= f'En este momento son las {hora.hour} , con {hora.minute} minutos y {hora.second} segundos'
+
+    # voy a decir la hora
+    hablar(hora)
+
+
+SALUDO INICIAL
+--------------
+
+# Saludo Inicial
+def saludo_inicial():
+    #crear variable con datos de hora
+    hora = datetime.datetime.now()
+    if hora.hour <6 or hora.hour >20:
+        momento ='Buenas noches'
+    elif 6 <= hora.hour < 13:   ---> elif hora.hour >= 6 and hora.hour <13:     forma simplificada
+        momento ='Buenos días'
+    else:
+        momento = 'Buenas tardes'
+
+
+
+
+    #decir el saludo
+    hablar(f'{momento}, soy Felipa, la tia que flipa, tu asistente personal, en que puedo ayudarte?')
+
+CENTRALITA DE PEDIDOS DEL ASISTENTE
+-----------------------------------
+
+    #variable de corte
+    comenzar = True
+    while comenzar:
+        # activamos el micro y guardar el pedido en un String
+        pedido = transformar_audio_en_texto().lower()
+
+        # vemos que tiene y que quiere que haga
+        if 'abrir youtube' in pedido:
+            hablar('Abriendo Youtube')
+            webbrowser.open('https://www.youtube.com')
+            continue
+        elif 'abrir navegador' in pedido:
+            hablar('Estoy abriendo el navegador')
+            webbrowser.open('https://www.google.com')
+            continue
+        elif 'que día es hoy' in pedido:
+            pedir_dia()
+            continue
+        elif 'que hora es' in pedido:
+            pedir_hora()
+            continue
+
+
+AGREGAR MÁS FUNCIONES
+---------------------
+         elif 'busca en internet' in pedido:
+            hablar('Estoy en ello')
+            pedido = pedido.replace('busca en internet', '')
+            pywhatkit.search(pedido)        ---> busca en internet y me da la página
+            hablar('Esto es lo que he encontrado')
+            continue
+        elif 'reproducir' in pedido:
+            hablar('Empiezo a reproducirlo')
+            pywhatkit.playonyt(pedido)      ---> playonyt es para que inicie un video en youtube
+            continue
+        elif 'cuentame un chiste' in pedido:
+            hablar(pyjokes.get_joke('es'))
+            continue
+        elif 'precio de las acciones' in pedido:
+            accion = pedido.split('de')[-1].strip() --> hago que coga la última palabra para realizar la accion
+            cartera = {'apple': 'APPL',
+                       'amazon':'AMZN',
+                        'google': 'GOOGL'
+                        }
+            try:
+                accion_buscada = cartera[accion]
+                accion_buscada = yf.Ticker(accion_buscada)  ---> llama a yahoo finance
+                precio_actual = accion_buscada.info['regularMarketPrice']   ---> busca el precio de mercado
+                hablar(f'el precio de la accion de {accion} es {precio_actual}')
+                continue
+            except:
+                hablar('Parece ser que no he podido encontrarla')
+
+FINALIZAR EL ASISTENTE
+----------------------
+
+             elif 'adiós' in pedido:
+                hablar('Me voy a descansar, cualquier cosa me avisas')
+                break

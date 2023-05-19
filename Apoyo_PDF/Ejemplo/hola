@@ -1,0 +1,28 @@
+"""edad = -7
+
+#if 0<edad<100:
+	print("edad es correcta")
+else:
+	print("edad incorrecta") """
+
+
+print("evaluacion salario")
+
+
+
+salario_presidente = int(input("introduce salario Presidente:  "))
+print("Salario Presidente:  ") #+ str(salario_presidente))  
+
+salario_director = int(input("Introduce el salario del Director:  "))
+print("Salario Director:  " + str(salario_director))
+
+salario_jefe_area = int(input("introduce salario Jefe de Area:  "))
+print("Salario Jefe de Area:  " + str(salario_jefe_area))
+
+salario_administrativo = int(input("introduce salario Administrativo:  "))
+print("Salario Administrativo:  " + str(salario_administrativo))
+
+if salario_administrativo<salario_jefe_area<salario_director<salario_presidente:
+	print("todo funciona perfectamente")
+else:
+	print("algo falla en esta empresa")

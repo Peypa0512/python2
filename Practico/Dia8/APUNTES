@@ -1,0 +1,450 @@
+APUNTES DIA 8
+-------------
+
+
+INSTALACION PAQUETES
+---------------------
+
+UTILIZAREMOS PIP para instalar los diferentes paquetes directamente desde el repositorio de PIP
+
+Se puede hacer directamente desde Google :
+
+vamos a descargar un paquete para poner color del texto de la consola:
+
+python packages for console text colors
+
+
+colored - PyPI
+https://pypi.org › project › colored
+
+te pondrá:
+
+ colored 1.4.4
+
+pip install colored
+
+en la consola de python ponemos
+
+from colored import fg ,   bg,         attr
+                    |_|     |_|        |___|
+              color frente, color de fondo, reseteo 0
+
+
+python packages from excell
+
+
+Python Resources for working with Excel - Working with Excel ...
+https://www.python-excel.org
+
+openpyxl 3.0.10
+
+pip install openpyxl
+
+para abrir directamente python en la consola cmd tecleamos python y ya estaremos en la consola de python para ejecutar
+cualquier codigo
+
+
+MODULOS Y PAQUETES
+------------------
+
+Cualquier fichero grabado como .py puede ser importado por otros modulos con import
+
+Puede tener funciones, variables, etc...
+
+Los paquetes son colecciones de  modulos y contiene varios modulos, contiene un modulo especial llamado  __init__.py
+
+
+Un atajo para ver todos los métodos de un módulo es con CTRL + ESPACIO
+
+
+from Pedro import Suma_Resta  ----> para importar funciones del paquete
+
+from Pedro.Subpaquete import Saludo ----> para llamar a los subpaquetes
+
+
+MANEJO DE EXCEPCIONES
+---------------------
+
+TRES PALABRAS FUNDAMENTALES:
+
+TRY ----------> intenta esto
+
+EXCEPT -------> si sale mal haz....
+
+FINALY -------> no importa si hay un error, finalmente ejecuta esto
+
+
+try:
+    #codigo a probar
+except:
+    #codigo por si hay un error
+else:  ----------------------------------------> se utiliza más else que finally
+    #codigo a ejecutar si no hay un error
+finally:
+    #codigo que se va a ejecutar de todos modos
+
+
+para utilizar los distintos errores se utiliza:
+
+except TypeError:-----> se pone el tipo de error que pueda darse, se puede poner cualquier tipo de error
+
+Una manera mucho más facil de pedir algo por pantalla sin tener que estar comprobando que se introduce es...
+
+def pedirNumero():
+    while True:
+        try:
+            numero = int(input("dame un número: "))
+        except:
+            print("Ese no es un número")
+        else:
+            print(f'Ingresaste el número {numero}')
+            break
+    print('Gracias')
+
+pedirNumero()
+
+EJERCICIO 1
+------------
+
+Hemos visto en la lección de qué manera se implementa el manejo de errores habitualmente en Python.
+En el caso de este ejercicio, sin embargo, necesitaré que lo hagamos de una forma ligeramente distinta para que
+pueda ser evaluado: deberás implementarlo DENTRO de la función. En forma de comentario,
+verás un ejemplo de resolución. Ten presente, sin embargo, que la forma preferida es la que hemos visto en clase.
+
+Implementa para la siguiente función suma(), un manejador de errores simple que ante cualquier error,
+imprima en pantalla el mensaje: "Error inesperado". En caso contrario, deberá limitarse a mostrar el resultado
+de la suma entre los dos números.
+
+
+"""
+Ejemplo de resolución:
+
+def nombre_funcion(argumento):
+    try:
+        {Lo que haría la función habitualmente}
+    except:
+        {Excepción}
+    else:
+        ... etc.
+"""
+
+
+def suma(num1,num2):
+
+    print(num1+num2)
+
+
+def suma(num1,num2):
+
+    try:
+        print(num1+num2)
+    except:
+        print("Error inesperado")
+
+
+EJERCICIO 2
+-----------
+
+Implementa para la siguiente función cociente(), un manejador de errores:
+
+Ante un error de tipo (TypeError), debe imprimir en pantalla el mensaje: "Los argumentos a ingresar deben ser números"
+
+Si se generara una división por cero (error del tipo ZeroDivisionError), el mensaje mostrado debe ser:
+"El segundo argumento no debe ser cero"
+
+En caso que no se produzca un error, deberá limitarse a imprimir el resultado del cociente (división)
+entre los dos números entregados como argumento.
+
+def cociente(num1,num2):
+
+    try:
+        print(num1/num2)
+    except TypeError:
+        print("Los argumentos a ingresar deben ser números")
+    except ZeroDivisionError:
+        print("El segundo argumento no debe ser cero")
+
+EJERCICIO 3
+-----------
+
+Implementa un manejador de errores dentro de la siguiente función, abrir_archivo():
+
+    En caso de que el archivo que se intenta abrir no pueda ser hallado (FileNotFoundError),
+    mostrar en pantalla el mensaje: "El archivo no fue encontrado"
+
+    En caso de que otro tipo de error ocurra, mostrar el mensaje: "Error desconocido"
+
+    Si no se produce ningún error, imprimir en pantalla: "Abriendo exitosamente"
+
+    En todos los casos, al finalizar, imprimir: "Finalizando ejecución"
+
+def abrir_archivo(nombre_archivo):
+    try:
+        archivo = open(nombre_archivo)
+
+    except FileNotFoundError:
+        print("El archivo no fue encontrado")
+    except:
+        print("Error desconocido")
+    else:
+        print("Abriendo exitosamente")
+    finally:
+        print("Finalizando ejecución")
+
+BUSCAR ERRORES CON PYLINT
+-------------------------
+
+pylint analiza el código e informa de posibles problemas, de estilos, algún codigo invalido
+
+unittest biblioteca que te permite probar tus programas y verificar los resultados.
+
+python tiene un conjunto de reglas de estilo que es PEP-8
+
+lo primero lo importamos:
+
+pip install pylint
+
+creamos el archivo trabajar_con_Pylint con un error hecho adrede y vamos haber como ejecutar pylint
+
+Vamos a cmd que tenemos abierto vamos a donde hemos dejado el archivo guardado.
+
+pylint trabajar_con_Pylint.py -r    y
+                              |_|  |_|
+                           reporte  yes
+
+
+UNITTEST
+--------
+
+Se usa para ver si el codigo esta funcionando bien o no
+
+simplemente hay que importar el modulo
+
+import unittest
+import cambia_texto
+
+class ProbarCambiarTexto(unittest.TestCase):
+
+    def test_mayusculas(self):
+        palabra = 'hola, buenos días'
+        resultado = cambia_texto.todo_mayusculas(palabra)
+        self.assertEqual(resultado,"HOLA, BUENOS DÍAS") #compara si es igual a lo que debería dar
+
+
+if __name__ ==   '__main__': # esta es la función principal
+   unittest.main()
+
+Resultado:
+
+Testing started at 14:28 ...
+
+
+Ran 1 test in 0.002s
+
+OK
+Launching unittests with arguments python -m unittest C:\Users\Usuario\Documents\software\Python\Dia8\prueba.py in C:\Users\Usuario\Documents\software\Python\Dia8
+
+
+
+DECORADORES
+------------
+
+funciones que modifican el funcionamiento de otras funciones
+
+@---> decorador
+
+ef decorar_saludo(funcion):
+
+    def otra_funcion(palabra):
+
+        print('hola')
+        funcion(palabra)
+        print('adios')
+    return otra_funcion
+# con esta función lo que hace es imprimir texto a mayusculas
+
+@decorar_saludo  # esto hace cuando se vaya a ejecutar envuelvela la función entre la funcion decorar_saludo()
+
+def mayuscula(texto):
+    print(texto.upper())
+
+
+@decorar_saludo
+def minusculas(texto):
+    print(texto.lower())
+
+minusculas('Python')
+mayuscula('amigos')
+
+Resultado mayuscula--->     hola
+                            AMIGOS
+                            adios
+
+Resultado minuscula--->     hola
+                            python
+                            adios
+
+Si quisieramos llamarlo cuando uno quiera se tendría que hacer así
+
+# para usar la funcion de may y min sin el decorador
+
+mayuscula_decorada = decorar_saludo(mayuscula)
+
+mayuscula('fede') # puedo activar o no el decorador
+
+Resultado opcion 1-------------------> FEDE
+
+mayuscula_decorada('fede') # así activo el decorador
+
+Resultado opcion 2------------------->  hola
+                                        FEDE
+                                        adios
+
+GENERADORES
+------------
+
+Un tipo especial de función que en vez de darnos un valor terminado, lo hace poco a poco según lo vayamos utilizando
+
+EJ---> Tenemos una lista de numeros del 1 al 5 la función nos dará la lista entera
+
+Si se lo pedimos a una funcion generadora, lo que hace es que se encarga la función de 1 a uno cada vez que lo vaya
+necesitando.
+
+Lo que hace es cuidar el espacio de memoria del ordenador.
+
+en vez de utilizar Return para que nos devuelva su producto terminado
+
+usamos yield (producir) que ira produciendolo según lo vaya necesitando
+
+
+#hacemos una funcion para que nos devuelva el nº 4
+
+def mi_funcion():
+    return 4 # ya nos da el resultado
+
+
+def mi_generador():
+    yield 4 #hasta que no se le haga la llamada no se genera
+
+print(mi_funcion())
+print(mi_generador())
+
+#para imprimir mi_generador()
+
+g = mi_generador()
+print(next(g))# con esto nos dará el número que se ha generado y si vuelvo a hacer next sacaría el siguiente
+
+
+
+def mi_funciones():
+    lista =[]
+
+    for x in range(1,5):
+        lista.append(x*10)
+    return lista
+
+def mis_generadores():
+
+    for x in range(1,5):
+        yield x*10
+
+print(mi_funciones())-------->[10, 20, 30, 40]
+print(mis_generadores())-----> <generator object mis_generadores at 0x000001CED911FED0>
+
+Para visualizar el generador y lo que ha producido se pasa a una variable
+
+g = mis_generadores()
+print(next(g))----> 10
+print(next(g))----> 20
+print(next(g))----> 30
+print(next(g))----> 40
+print(next(g))
+
+Traceback (most recent call last):
+  File "C:\Users\Usuario\Documents\software\Python\Dia8\Generadores.py", line 40, in <module>
+    print(next(g))
+          ^^^^^^^
+StopIteration----> esto nos indica que no puede generar más
+
+
+def otro_generador():
+
+    # return en el momento que ve el primero se para la función y sale, yield no
+
+    x = 1
+    yield x
+
+    x +=1
+    yield x
+
+    x +=1
+    yield x
+
+g = otro_generador()
+print(next(g))---> 1
+print(next(g))---> 2
+
+aqui puede ir funciones, variables, otras impresiones, esto no deja que cada vez que se llame al generador,
+no nos dé el número siguiente al que haya generado antes.
+
+print(next(g))---> 3
+
+
+
+EJERCICIO 1
+-----------
+
+Crea un generador (almacenado en la variable generador) que sea capaz de devolver una secuencia infinita de números,
+iniciando desde el 1, y entregando un número consecutivo superior cada vez que sea llamada mediante next.
+
+def generando():
+    x = 0
+    while True:
+        x +=1
+        yield x
+
+generador = generando()
+
+EJERCICIO 2
+-----------
+
+Crea un generador (almacenado en la variable generador) que sea capaz de devolver de manera indefinida múltiplos de 7,
+iniciando desde el mismo 7, y que cada vez que sea llamado devuelva el siguiente múltiplo (7, 14, 21, 28...).
+
+def secuencia():
+    num = 0
+    while True:
+        num +=1
+        yield num * 7
+
+generador = secuencia()
+
+EJERCICIO 3
+-----------
+
+Crea un generador que reste una a una las vidas de un personaje de videojuego, y devuelva un mensaje cada vez que sea llamado:
+
+    "Te quedan 3 vidas"
+
+    "Te quedan 2 vidas"
+
+    "Te queda 1 vida"
+
+    "Game Over"
+
+def juego():
+    num = "Te quedan 3 vidas"
+    yield num
+
+    num = "Te quedan 2 vidas"
+    yield num
+
+    num = "Te queda 1 vida"
+    yield num
+
+    num = "Game Over"
+    yield num
+
+
+
+perder_vida = juego()

@@ -1,0 +1,4 @@
+print(x)
+y=x+14
+prx=5
+int(y)

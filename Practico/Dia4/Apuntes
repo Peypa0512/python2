@@ -1,0 +1,559 @@
+Apuntes
+
+Operadores de comparación
+-------------------------
+
+No es otra cosa que darle información a la programación para que sepa
+que decisión tiene que determinar.
+
+== ---> igual a y b
+!= ---> a distinto de b
+>  ---> a mayor que b
+<  ---> a menor que b
+>= ---> a mayor o igual que b
+<= ---> a menor o igual que b
+
+mi bool 'blanco' == 'negro'--> también se pueden comparar strings
+resultado ---> False
+
+operadores logicos
+------------------
+
+AND --> Y Se tienen que cumplir todas las condiciones
+OR  --> O Se tiene que cumplir alguna de las condiciones
+NOT --> No tiene que cumplir las condiciones
+
+Control de Flujo
+----------------
+
+Consiste que si se cumple una condicion o no python ejecute un código u otro.
+
+palabras claves:
+if: ----> si se cumple.....
+elif: --> sino si se cumple....
+else: --> ya que no se cumple haz....
+
+hay que hacer tabulación cuando se utilizan
+
+FOR
+----
+
+for i in elemento:
+   |_|
+variable interna--> cogerá el dato de la variable elemento en cada iteracion
+
+lista2=['Pablo','Laura','Fede','Julia','Luis']
+
+for nombre in lista2:
+    if nombre.startswith('L'):---> startswith: comienza con la letra
+        print(nombre)
+    else:
+        print('Nombre que no empieza por L')
+
+        for n in numeros:
+    mi_valor= mi_valor+n
+    print(mi_valor) --> no es igual tener el print en for que fuera de él
+print("\n")
+print(mi_valor)
+
+lista3=[[1,2],[3,4],[5,6]]
+for a,b in lista3:---> se pueden definir 2 variables por ejemplo en esta lista
+    print(a)--->1,3,5
+    print(b)--->2,4,6
+
+    dic={1:'a',2:'b',3:'c'}
+
+for a,b in dic.items():--->se pueden llamar a las claves con dic.keys(), valores dic.values()
+    print(a,b)--> nos devolverá la clave y el valor 1 a  2 b  3 c
+
+WHILE
+-----
+
+Se cumplira MIENTRAS(while) se cumpla una condición
+
+while condicion booleana(True o False):
+
+3 palabras claves:
+    -break
+    -continue
+    -pass
+
+monedas =5;
+
+while monedas>0:
+    print(f'Tengo {monedas} monedas')
+    monedas -=1 -->decrimento
+          |---> necesitaremos para que se cumpla la condicion del while
+
+respuesta ='s'
+
+while respuesta =='s':
+    respuesta = input ('¿Quieres seguir? (s/n) ')---> dependerá de la entrada que se haga por pantalla
+else:
+    print('Gracias')
+
+    - pass:
+    El while pasará hasta que se diga lo contrario
+
+    while respuesta == 's':
+    pass
+    else:
+    print('Gracias')
+
+    - break:
+    Interrumpe el while y sale de él
+    nombre = input('Tu nombre > ')
+    for letra in nombre:
+    if letra == 'r':
+        break
+    print(letra)
+    Resultado ---> f e d e
+
+    - continue
+    continua hace algo parecido al break ya que interrumpe la iteración,
+    pero no interrumpe el bucle y continua
+
+    nombre = input('Tu nombre > ')
+    for letra in nombre:
+    if letra == 'r':
+        continue
+    print(letra)
+    Resultado ---> f e d e i c o
+
+ print('\n')
+lista_numeros = [4, 5, 8, 7, 6, 9, 8, 2, 4, 5, 7, 1, 9, 5, 6, -1, -5, 6, -6, -4, -3]
+# utilizando break
+for numero in lista_numeros:
+    if numero>0:
+        print(numero)
+    else:
+        break
+Resultado--->   4, 5, 8, 7, 6, 9, 8, 2, 4, 5, 7, 1, 9, 5, 6
+
+#utilizando continue
+for numero in lista_numeros:
+
+    if numero < 0:
+        continue
+    else:
+        print(numero)
+Resultado--->   4, 5, 8, 7, 6, 9, 8, 2, 4, 5, 7, 1, 9, 5, 6, 6
+
+RANGO
+-----
+
+Se utiliza para poder iterar con RANGE
+
+Te permite establecer un rango de numeros sin utilizar una lista o una variable
+
+lista =[1,2,3,4,5]
+
+for i in range(6):
+    print(i)
+Resultado--->0,1,2,3,4,5
+
+for i in range(1,6):--> del 1 al 6
+    print(i)
+Resultado--->1,2,3,4,5
+for i in range(1,30,2):
+    print(i)
+Resultado--->1,3,5,7,9,11,..29
+#hacemos una lista del 1 al 100
+lista = list(range(1,101))
+print(lista)
+Resultado--->[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,...100]
+
+#Ejercicios
+
+1) Utiliza la función range() y un loop para sumar los cuadrados de todos los números del 1 al 15 (inclusive). Almacena el resultado en una variable llamada suma_cuadrados.
+
+Para ello:
+
+    Crea un rango de valores que puedas recorrer en un loop
+
+    Para cada uno de estos valores, calcula su valor al cuadrado (potencia de 2). Puede que necesites crear variables intermedias (de manera opcional).
+
+    Suma todos los valores al cuadrado obtenidos. Acumula la suma en la variable suma_cuadrados.
+
+    suma_cuadrados = 0
+
+for numero in range(1,16):
+    cuadrado = pow(numero,2)
+    suma_cuadrados=suma_cuadrados+cuadrado
+
+2) Utilizando la función range(), crea en una única linea de código una lista formada por todos los números múltiplos
+de 3 desde el 3 al 300 (inclusive). Almacena dicha lista en la variable mi_lista.
+
+mi_lista = list(range(3,301,3))
+
+3)Crea una lista formada por todos los números desde el 2500 al 2585 (inclusive).
+Almacena dicha lista en la variable mi_lista.
+
+mi_lista = list(range(2500,2586))
+
+
+enumerate( )
+------------
+nos facilita llevar la cuenta de las iteraciones, a través de un contador de índices de un iterable.
+En vez de utilizar contadores, nos va resultar mucho mas comodos
+
+lista =['a','b','c','d']
+for a,b in enumerate(lista):
+   print(a,b)
+Resultado---->  0 a
+                1 b
+                2 c
+                3 d
+
+
+
+for a,b in enumerate(range(50,56)):
+    print(a,b)
+Resultado---->  0 50
+                1 51
+                2 52
+                3 53
+                4 54
+                5 55
+
+mis_tuples =list(enumerate(lista))
+print(mis_tuples) ----> [(0, 'a'), (1, 'b'), (2, 'c'), (3, 'd')]
+                                   /
+print(mis_tuples[1][0]) ---->     1
+
+Ejercicios
+
+1)Imprime en pantalla frases como la siguiente:
+
+{nombre} se encuentra en el índice {indice}'
+
+Donde nombre debe ser cada uno de los nombres de la lista a continuación, y el índice, obtenido mediante enumerate().
+
+lista_nombres = ["Marcos", "Laura", "Mónica", "Javier", "Celina", "Marta", "Darío", "Emiliano", "Melisa"]
+
+Puedes modificar la línea print() otorgada como ejemplo, pero las frases entregadas deberán ser iguales.
+
+Tip: utiliza loops!
+
+lista_nombres = ["Marcos", "Laura", "Mónica", "Javier", "Celina", "Marta", "Darío", "Emiliano", "Melisa"]
+for indice, nombre in enumerate(lista_nombres):
+    print(f'{nombre} se encuentra en el índice {indice}')
+
+
+2) Crea una lista formada por las tuplas (indice, elemento), formadas a partir de obtener mediante enumerate() los índices de cada caracter del string "Python".
+
+Llama a la lista obtenida con el nombre de variable lista_indices .
+
+lista_indices=list(enumerate("Python"))
+
+3) Imprime en pantalla únicamente los índices de aquellos nombres de la lista a continuación, que empiecen con M:
+
+lista_nombres = ["Marcos", "Laura", "Mónica", "Javier", "Celina", "Marta", "Darío", "Emiliano", "Melisa"]
+
+Puedes resolverlo de diferentes maneras, pero servirá que tengas presente todos o algunos de los siguientes elementos:
+
+    Loops
+
+    Condicionales if
+
+    El método enumerate()
+
+    Métodos de strings o indexado
+
+    for i in lista_nombres:
+    if(i.startswith('M')):
+        print(i)
+    Resultado--->   Marcos
+                    Mónica
+                    Marta
+                    Melisa
+
+for a,b in enumerate(lista_nombres):
+
+    if b.startswith("M"):
+        print (a)
+
+    Resultado--->   0
+                    2
+                    5
+                    8
+
+ZIP
+---
+
+Combina 2 o más listas entrelanzando sus elementos en tuples
+
+    nombre =['pablo','juan']
+    numero = [0,1,2]---> aunque tenga 3 numeros zip solo cogerá la longitud de lista más pequeña
+    orden = zip(nombre,numero)
+    para imprimirlo hay que pasarlo a una lista
+
+    orden = list(zip(nombre,numero))
+
+    print (orden)
+    resultado---> [('pablo',0),('juan',1)]
+
+se puede imprimir así
+
+    nombres =['Ana','Valeria','Hugo']
+    edades = 65,29,46
+    ciudades =['lima','Madrid','Mexico']
+    combinados = zip(nombres,edades)
+    for nombre,edad,ciudad in combinados:
+        print(f'{nombre} que tiene {edad} años, vive en {ciudad}')
+
+Resultado ----> Ana que tiene 65 años, vive en lima
+                Valeria que tiene 29 años, vive en Madrid
+                Hugo que tiene 46 años, vive en Mexico
+
+Ejercicios
+-----------
+
+Muestra en pantalla frases como la del siguiente ejemplo:
+La capital de Alemania es Berlín
+Utiliza la función zip, loops, y las siguientes listas de países y capitales para resolverlo rápida y eficientemente.
+
+capitales = ["Berlín", "Tokio", "París", "Helsinki", "Ottawa", "Canberra"]
+paises = ["Alemania", "Japón", "Francia", "Finlandia", "Canadá", "Australia"]
+
+ciudades = list(zip(capitales,paises))
+
+for capital,pais in ciudades:
+    print(f'La capital de {pais} es {ciudad}')
+
+Resultado---->  La capital de Alemania es Berlín
+                La capital de Japón es Tokio
+                La capital de Francia es París
+                La capital de Finlandia es Helsinki
+                La capital de Canadá es Ottawa
+                La capital de Australia es Canberra
+
+2) Crea un objeto zip formado a partir de listas,
+de un conjunto de marcas y productos que tú prefieras, dentro de la variable mi_zip.
+
+marcas = ['Adidas','Nike','Reebok']
+productos =['Zapatilla','Ropa','Polo']
+mi_zip = zip(marcas,productos)
+
+3)Crea el zip con las traducciones los números del 1 al 5 en español, portugués e inglés (en el mismo orden), y convierte el objeto generado en una lista almacenada en la variable numeros:
+
+    uno / um / one
+
+    dos / dois / two
+
+    tres / três / three
+
+    cuatro / quatro / four
+
+    cinco / cinco / five
+
+El resultado deberá seguir la estructura:
+
+[('uno', 'um', 'one'), ('dos', 'dois', 'two'), ... ]
+
+uno=['uno','dos','tres','cuatro','cinco']
+dos=['um','dois','três','quatro','cinco']
+tres=['one','two','three','four','five']
+numeros= list(zip(uno,dos,tres))
+print(numeros)
+Resultado ----> [('uno', 'um', 'one'), ('dos', 'dois', 'two'), ('tres', 'três', 'three'), ('cuatro', 'quatro', 'four'), ('cinco', 'cinco', 'five')]
+
+MIN y MAX
+---------
+
+Sirve tanto para numerico como caracteres
+
+nombre =['juan','pablo','alicia','carlos']
+print(min(nombre))----> alicia
+nombre =['juan','pablo','alicia','Carlos']
+print(min(nombre))---> Carlos--->esto es debido al caracter ASCII es menor las mayúsculas que las minúsculas
+print(max(nombre))---> pablo
+
+dic ={'C1':45,'C2':11}
+print(min(dic))---> C1---> aunque haya un valor 11 como minimo cogerá las keys
+print(min(dic.values()))--> aquí coge los valores del diccionario y en este caso será 11
+
+random
+------
+from random import randint--> si queremos todo pondremos *
+import random
+randint ---> metodo de la clase random
+devuelve un número aleatorio
+
+los métodos de la clase random son:
+
+randint()
+aleatorio = randint(1,50)
+print(aleatorio)
+
+uniform()
+# numero aleatorio decimal
+aleatorio1 = round(uniform(1,5),1)
+print(aleatorio1)
+
+random()
+#elige un número aleatorio entre 0 y 1
+aleatorio2 = random()
+print(aleatorio2)
+
+choice()
+#te permite trabajar con una seleccion aleatorio dentro de una lista
+colores =['azul','verde','rojo','violeta']
+
+shuffle()
+se utilizan para listas pero no para String o tuplas ya que son inmutables
+# shuffle sirve para mezclar aleatoriamente
+numeros= list(range(5,50,5))
+shuffle(numeros)
+print(numeros)
+
+EJERCICIO
+---------
+1)Implementa la función randint() de la librería random que te permita obtener un número entero del 1 al 10,
+y almacena dicho valor en una variable llamada aleatorio
+
+from random import randint
+aleatorio = randint(1,10)
+
+2)Implementa la función random() de la librería random que te permita obtener un número decimal entre 0 y 1,
+ y almacena dicho valor en una variable llamada aleatorio
+
+ from random import *
+aleatorio = random()
+
+3) Utiliza el método choice() de la librería random para obtener un elemento al azar
+de la lista de nombres a continuación, y almacena el nombre escogido en una variable llamada sorteo.
+
+nombres = ["Carlos", "Julia", "Nicole", "Laura", "Mailen"]
+
+from random import choice
+
+nombres = ["Carlos", "Julia", "Nicole", "Laura", "Mailen"]
+sorteo = choice(nombres)
+
+COMPRESION DE FICHEROS
+----------------------
+
+palabra ='PYTHON'
+
+lista =[]
+for letra in palabra:
+    lista.append(letra)
+print(lista)
+#ocupa unas cuantas lineas de codigo
+#podemos hacer lo siguiente
+# le decimos a lista que cada elemento va a ser una letra de cada letra que haya en palabra
+lista2 = [letra for letra in palabra]
+
+print(lista2)
+
+# también se puede hacer directamente
+lista3 = [letra for letra in 'python']
+print(lista3)
+
+#también se puede hacer con numeros
+
+lista4=[n for n in range(0,21,2)]
+print(lista4)
+
+#podemos modificar estos numeros
+lista5=[n/2 for n in range(0,21,2)]
+print(lista5)
+
+#puedo incorporar también un if
+lista6=[n for n in range(0,21,2) if n*2 >10 ]
+print(lista6)
+
+# y si quiero poner un else hay que ponerlo detras del primer 'n'
+lista7=[n if n*2 >10 else 'no' for n in range(0,21,2) ]--> se pierde legibilidad pero al añadir else ha de ir al principio
+print(lista7)
+
+#supongamos que tenemos una lista con medidas en pies
+
+pies =[10,20,30,40,50]
+metros =[p *3.281 for p in pies]--> hacemos un bucle en la primera p
+print(metros)
+
+
+EJERCICIOS
+----------
+
+1)Para realizar el ejercicio a continuación, puedes optar por diferentes caminos.
+Si bien en programación el camino correcto es el que devuelve el resultado correcto,
+te animo a que intentes aplicar los conceptos de comprensión de listas para comenzar a afianzarlos para el futuro.
+ ¡Pueden resultarte muy útiles en tu práctica profesional!
+
+Crea una lista valores_cuadrado formada por los números de la lista valores, elevados al cuadrado.
+
+valores = [1, 2, 3, 4, 5, 6, 9.5]
+
+valores_cuadrado = [pow(n,2) for n in valores]
+[32.81, 65.62, 98.43, 131.24, 164.05]
+
+2)Crea una lista valores_pares formada por los números de la lista valores que (¡adivinaste!) sean pares.
+
+valores = [1, 2, 3, 4, 5, 6, 9.5]
+
+valores_pares=[n for n in valores if n%2==0]
+RESULTADO--->[2,4,6]
+
+3) Para la siguiente lista de temperaturas en grados Fahrenheit, expresa estos mismos valores en una
+nueva lista de valores de temperatura en grados Celsius. La conversión entre tipo de unidades es la siguiente:
+
+°C = (°F - 32) * (5/9)
+
+o expresado de otro modo:
+
+(grados_fahrenheit-32)*(5/9)
+
+La lista de temperaturas es la siguiente:
+
+    temperatura_fahrenheit = [32, 212, 275]
+
+Almacena esta nueva lista en una variable llamada grados_celsius
+
+grados_celsius= [round((n-32)*(5/9),2) for n in temperatura_fahrenheit]
+RESULTADO---> [0.0,100.0,135.0]
+
+MATCH
+-----
+
+3.10 PYTHON
+
+Al fin ha implatado este metodo que es como un switch, switch case
+
+match serie:
+    case "N-01":
+        print("Samsung")
+    case "N-02":
+        print("Nokia")
+    case "N-03":
+        print("Motorola")
+    case _:
+        print("No existe este producto"
+
+otro ejemplo
+cliente ={'nombre':'Federico',
+           'edad' : 45,
+           'profesion': 'Instructor'}
+
+pelicula={ 'titulo':'Matrix',
+            'ficha_tecnica':{'protagonista':'Keanu Reeves',
+                              'director':'Lana y Lilly Wachowski'}
+
+elementos = [cliente, pelicula,'libro']
+
+for e in elementos:
+    match e:
+        case{'nombre': nombre,
+             'edad': edad,
+              'profesion': profesion}:
+                print("es un cliente"
+                print(nombre,edad,profesion
+
+        case{'titulo':titulo,
+             'ficha_tecnica': ficha_tecnica{'protagonista':protagonista, 'director':director}
+                print("esto es una pelicula"
+                print(titulo,protagonista, director
+        case_:
+            print("No se que es esto")

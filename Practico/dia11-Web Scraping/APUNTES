@@ -1,0 +1,304 @@
+WEB SCRAPING
+------------
+
+el front end es la visión del usuario
+el back end es la visión del programador por dentro
+
+Principales componentes:
+    - HTML          ---> estructura y contenido
+    - CSS           ---> estilo y fuente
+    - JAVASCRIPT    ---> elementos interactivos
+
+las bibliotecas que vamos a utilizar son:
+
+beautifulsoup4
+lxml
+requests
+
+EXTRAER EL TITULO  DE LA ETIQUETA
+---------------------------------
+
+import bs4
+import requests
+
+resultado = requests.get('https://escueladirecta-blog.blogspot.com/2021/10/encapsulamiento-pilares-de-la.html')
+
+
+
+#para ver lo que queremos ver, utilizaremos el beatifulsoup
+
+sopa = bs4.BeautifulSoup(resultado.text, 'lxml')
+print(sopa.select('title')[0].getText())---> metodos de las listas, para quitar etiquetas y dejar solo texto
+Resultado   ---->   Encapsulamiento - Pilares de la Programación Orientada a Objetos en Python
+print(len(sopa.select('p')))
+Resultado   ----> 4
+print('\n')
+
+#otro ejemplo un parrafo en negrita
+parrafo_especial= sopa.select('p')      ---> selecciono que es lo quiero para limpiarlo y coger lo que me interesa
+print(parrafo_especial[3].getText())    ---> queremos de todos lo parrafos que hay el 4 que es el reg 3 de lista
+Resultado       ---->   instancia + _ + NombreClase + método/atributo oculto
+
+EXTRAER ELEMENTOS DE UNA CLASE
+-------------------------------
+
+
+
+ Carácter                  Sintaxis                                                    Resultados
+    "                   soup.select('div')                                  Todos los elementos con la etiqueta 'div'
+    #                   soup.select('#estilo_4')                            Elementos que contengan  id='estilo4'
+    .                   soup.select('.columna_der')                         Elementos que contengan class='columna der'
+ (ESPACIO)              soup.select('div span')                             Cualquier elemento llamado 'span'
+                                                                            dentro de un elemento 'div'
+    >                   soup.select('div>span')                             Cualquier elemento llamado 'span'
+                                                                            directamente dentro de un elemento 'div',
+                                                                            sin nada en el medio
+
+
+columna_lateral = sopa.select('.item-content div')  ---> cogerá todos los elementos de item que tengan div
+for p in columna_lateral:
+    print(p.getText())  ---> me imprimira todo lo que haya pero ya como un string de div
+
+
+EXTRAER IMAGENES
+----------------
+la idea es capturar todas las imagenes, pero evitar que se descarguen imagenes extras, solo las imagenes de los
+cursos.
+
+Las imagenes están en un URL.
+
+la etiqueta es <img>, hay que identificar src para poder extraer la imagen.
+
+resultado1 = requests.get('https://www.escueladirecta.com/courses')
+
+sopa = bs4.BeautifulSoup(resultado1.text, 'lxml')
+
+imagenes = sopa.select('.course-box-image')
+
+for imagen in imagenes:
+    print(imagen)   ---> me sacará un listado con todas las imagenes, nos interesa el src
+
+imagenes = sopa.select('.course-box-image')[0]['src'] # esto nos dará la url donde está alojada la imagen
+
+print( imagenes)
+
+Resultado---> https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://file-uploads.teachablecdn.com/136becbcea3e4d51abede23bf9794cf1/bcae2c4d38ac4953bd27a3d3be140893
+
+lo que haremos ahora será descargar la imagen
+
+imagen_curso_1 = requests.get(imagenes)
+
+print(imagen_curso_1.content) # esto me da un archivo binario del archivo que queremos
+
+f = open('mi_imagen.jpg','wb')  ---> abrimos un archivo nuevo y lo escribimos en binario como arriba wb
+f.write(imagen_curso_1.content) ---> le pasamos el content que está en binario
+f.close()
+
+TOSCRAPE.COM
+------------
+
+ES UN ENLACE QUE SE DEDICA A ESTO PARA PRACTICAR EL WEB SCRAPING
+
+Utilizaremos BOOKS
+------------------
+
+Nuestro objetivo es obtener todos los títulos que tengan 4 ó más estrellas
+
+Estamos relacionando 2 cosas distintas:
+
+    - Queremos el título del libro
+    - Calificación de las estrellas
+
+
+EXPLORAR MULTIPLES PÁGINAS
+--------------------------
+
+Cada página es distinta, por lo que, este código no va a valer para todas las páginas web.
+
+en este caso utilizando la página de arriba podemos hacernos una idea de como poder consultar según las páginas
+
+http://books.toscrape.com/catalogue/page-2.html
+                                   \___________/
+
+import bs4
+import requests
+
+url_base = 'http://books.toscrape.com/catalogue/page-{}.html'   ---> ponemos entre llaves donde vamos a pasar la página
+
+print(url_base.format(15))  ---> si yo en format le doy el valor 15 me dará lo siguiente
+Resultado   ---> http://books.toscrape.com/catalogue/page-15.html
+                                                          \_/
+
+
+for n in range(1,11):
+    print(url_base.format(n))
+
+Resultado   --->    http://books.toscrape.com/catalogue/page-1.html
+                    http://books.toscrape.com/catalogue/page-2.html
+                    http://books.toscrape.com/catalogue/page-3.html
+                    http://books.toscrape.com/catalogue/page-4.html
+                    http://books.toscrape.com/catalogue/page-5.html
+                    http://books.toscrape.com/catalogue/page-6.html
+                    http://books.toscrape.com/catalogue/page-7.html
+                    http://books.toscrape.com/catalogue/page-8.html
+                    http://books.toscrape.com/catalogue/page-9.html
+                    http://books.toscrape.com/catalogue/page-10.html
+
+
+IDENTIFICAR CONDICIONES DE EXTRACCION
+-------------------------------------
+
+Vamos a ver como podemos identificar que libros tiene 4 ó más estrellas
+
+Para identificarlo inspeccionamos la clase y nos fijamos en la clase donde están las estrellas.
+
+En este caso aparece <i class="icon-star"></i>, esto me indica que es cada una de las estrellas y esto no me vale,
+tendré que subir más arriba hasta ver <p class="star-rating Five">  ---> esta es la que me va a interesar 'star-rating'
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                </p>
+
+Para saber el nombre, que va a ser también lo que me interese tendré que buscar y vemos que están en el mismo nivel,
+tendremos que subir y ver en que etiqueta está contenida....
+
+<article class="product_pod">
+
+            <div class="image_container">   ---> aquí está la imagen del libro
+
+
+                    <a href="chase-me-paris-nights-2_977/index.html"><img src="../media/cache/9c/2e/9c2e0eb8866b8e3f3b768994fd3d1c1a.jpg" alt="Chase Me (Paris Nights #2)" class="thumbnail"></a>
+
+
+            </div>
+
+
+
+
+                <p class="star-rating Five">    ---> las estrellas del libro
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                </p>
+
+
+
+
+            <h3><a href="chase-me-paris-nights-2_977/index.html"
+            title="Chase Me (Paris Nights #2)">Chase Me (Paris Nights ...</a></h3>  ---> nombre del libro
+
+
+
+            <div class="product_price">
+
+
+
+
+
+
+
+
+        <p class="price_color">£25.27</p>   ---> precio del libro
+
+
+<p class="instock availability">    ---> el stockage del libro
+    <i class="icon-ok"></i>
+
+        In stock
+
+</p>
+....
+
+Por lo que tendremos que seleccionar aquellos que tengan las estrellas determinadas y de ahí extraemos el título
+
+resultados = requests.get(url_base.format('1')) ---> cogeremos de la página 1
+sopa = bs4.BeautifulSoup(resultados.text, 'lxml')
+
+print(len(sopa.select('.product_pod'))) ---> nos dará como Resultado 20 libros
+
+
+EXTRAER EL TITULO DEL LIBRO
+---------------------------
+
+vamos a ir seleccionando algún libro que contenga un ratio de 3 estrellas
+
+libros = sopa.select('.product_pod')
+
+ejemplo = libros[0].select('.star-rating.Three')    ---> cogemos el indice 0 y le decimos que selecciones aquellos que
+                                                         tenga 3 estrellas (los espacios en blanco hay que poner '.'
+
+print(ejemplo)
+
+Resultado   ---->   [<p class="star-rating Three">
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    </p>]
+
+
+# para ver el titulo del libro
+
+ejemplo = libros[0].select('a')[1]
+print(ejemplo)  ---> <a href="a-light-in-the-attic_1000/index.html" title="A Light in the Attic">A Light in the ...</a>
+                                                                    \__________________________/
+                                                                     Esto es lo que me va a interesar
+ejemplo = libros[0].select('a')[1]['title'] ---> selecciono el título
+print(ejemplo)  --->    A Light in the Attic
+
+COMBINAR ITEMS BUSCADOS
+-----------------------
+
+import bs4
+import requests
+
+# creamos una url sin número de páginas
+url_base = 'http://books.toscrape.com/catalogue/page-{}.html'
+
+#creamos una lista vacia que va a contener 4 0 5 estrellas
+
+titulos_rating_alto =[]
+
+#   vamos a iterar las páginas
+
+for pagina in range(1,51):
+    # en cada iteración va a crear una página distinta
+    url_pagina = url_base.format(pagina)
+    resultado = requests.get(url_pagina)
+    sopa = bs4.BeautifulSoup(resultado.text, 'lxml')
+
+    # vamos a crear una variable con  la selección de los libros
+    libros= sopa.select('.product_pod')
+
+    #vamos a iterar en los libros
+
+    for libro in libros:
+        # chequea si tiene 4 0 5 estrellas
+        if len(libro.select('.star-rating.Four')) != 0 or len(libro.select('.star-rating.Five')) != 0:
+            # guardamos el titulo en la variable
+            titulo_libro = libro.select('a')[1]['title']
+
+            #agregamos el libro a la lista
+            titulos_rating_alto.append(titulo_libro)
+
+#ver libro 4  o 5  estrellas en consola
+
+for t in titulos_rating_alto:
+    print(t)
+
+Resultado   --->    Sharp Objects
+                    Sapiens: A Brief History of Humankind
+                    The Dirty Little Secrets of Getting Your Dream Job
+                    The Boys in the Boat: Nine Americans and Their Epic Quest for Gold at the 1936 Berlin Olympics
+                    ...........
+
+Con esto ya tendríamos los datos del proyecto y el resultado.
+
+
+
+

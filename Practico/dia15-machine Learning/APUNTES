@@ -1,0 +1,10 @@
+PROGRAMAR UN MODELO DE MACHINE LEARNING ---> APRENDIZAJE SUPERVISADO
+---------------------------------------
+
+   Utilizaremos tres librerias
+            - NUMPY                        ---> modulo por defecto para calculos matematicos
+            - PANDAS                       ---> utilizada para manipular y utilizar datos en python está estructura en filas y columnas
+                                                se le llama el excell de Python
+            - MATPLOTLIB                   ---> libreria para crear gráficos en python
+            - SEABORN                      ---> representa también gráficos
+            - SCI KIT LEARN  (SKLEARN)     ---> TIENE TODO LO QUE SE NECESITA PARA MACHINE LEARNING

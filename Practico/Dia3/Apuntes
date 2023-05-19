@@ -1,0 +1,226 @@
+INDEX
+------
+mi_texto ="Esta es mi prueba"
+
+
+resultado1 = mi_texto.index("m")
+resultado1 = mi_texto.index("prueba")
+resultado1 = mi_texto.index("a")--->sacara solo la primera que encuentre
+resultado1 = mi_texto.index("a",5)--->empieza a contar desde la posición 5 y nos dará la posición 10
+lo lógico sería
+resultado1 = mi_texto.index("a"1,10)---> cogerá desde la 1 a la 9 excluyendo el 10
+
+Index = tiene 3 parametros:
+- para una substring---> palabra, caracter....
+- desde donde
+- hasta donde
+
+se puede saber el indice con  []
+si son caracteres positivos va de izquierda a derecha
+si son caracteres negativos va de derechas a izquierda
+Es sensible a mayúsculas
+
+hay otro método muy parecido
+resultado1 = mi_texto.rindex("a")---> dará la posición 16 que será la primera 'a' que encuentre
+
+Este método lee de derechas a izquierdas
+
+EXTRAER SUBSTRING
+----------------
+
+mi_variable ="esta palabra será extraida"
+                  |_______|
+mi_variable[      5   :  12]---> el último caracter para que lo incluya hay que poner uno más en este caso 13
+
+si ponemos
+mi_variable [2:]---> cogerá a partir de la posición 2
+mi_variable [:5]---> cogerá de la posición hasta la 4
+
+hay otra posibilidad que es
+mi_variable ="ABCDEFGHIJKLM"
+
+mi_variable [2:5:2]--> CFI
+                |_|---> nos indicará cada cuantos caracateres voy a ir extrayendo
+
+mi_variable [::3]--->ADGJM
+              |_|--> nos cogerá desde el principio
+
+mi_variable [::-1]--->MLKJIHGFEDCBA
+              |_|--> nos cogerá desde la última posición
+
+METODOS DE STRING
+-----------------
+
+UPPER()
+resultado1=texto1.upper()---> todo el texto en Mayusculas
+resultado1=texto1[2].upper()--> la posición 2 no la devolverá en mayúscula
+
+LOWER()
+resultado1=texto1.lower()---> todo el texto en minúsculas
+
+SPLIT()
+resultado1=texto1.split()
+Significa separa y es lo que va a hacer y lo separa en elementos y lo guarda en una lista
+Por defecto separa las palabras por espacios vacios
+resultado1=texto1.split('t')--> separara la palabra cuando encuentre una t
+Se puede utilizar con otros separador distinto
+[' es', 'e es el ', 'ex', 'o de ejemplo']
+
+JOIN()
+a ="aprender"
+b ="Python"
+c ="es"
+d="genial"
+e=" ".join([a,b,c,d])--> creamos una lista y metemos todas la variables y con " " lo unimos
+print(e)---->aprender Python es genial
+
+FIND()
+
+texto1 ="este es el texto de ejemplo"
+resultado1= texto1.find("s")---> me da la posición 1
+
+La diferencia entre Find e Index es que find busca un determinado caracter y
+no existe en vez de dar un error me arroja un valor -1
+
+REPLACE()
+Este metodo reemplaza un fragmento del texto por otro
+resultado1 = texto.replace("ejemplo","Pedro")---> el resultado será
+este es el texto de Pedro
+
+
+PROPIEDADES DEL STRING
+----------------------
+
+Son inmutables, porque no vas a poder modificarla parte del contenido
+Se pueden concatenar con el simbolo "+", también se pueden multiplicar con "*"
+Se pueden crear String más largos de una linea con """
+
+nombre =""" Mil pequeños peces  blancos
+        como si hirviera el color del agua"""
+
+el resultado saldría así...
+ Mil pequeños peces  blancos
+        como si hirviera el color del agua
+
+Se puede verificar parte del String con un substring
+
+print( "agua" in nombre) --> ponemos que si agua esta dentro de nombre
+
+La respuesta siempre va a ser booleana y en este caso saldrá
+True---> recuerda que para los booleanos es  True o False con la primera en mayúscula
+
+También se puede poner así
+
+print( "agua" not in nombre) ---> en este caso estamos diciendo que si no está en nombre
+La respuesta será
+False--> porque si está agua en en nombre
+
+
+El tamaño de un String con len()
+
+Se utiliza para saber el largo del nombre
+print(len(nombre))
+el resultado será
+72
+
+Tuples
+------
+son una coleccion de elementos muy similar a las listas pero son inmutables
+llevan () o sin ello
+
+Se usan los tuples más que con listas por:
+
+ - Ocupan menos espacio de memoria y se procesan más rapido que las listas
+ - Al no poder ser modificadas se usan para almacenar estructuras que no pueden ser modificadas
+
+#podemos hacer lo siguiente
+m= 1,2,3
+x,y,z = m
+print(x,y,z)
+# esto se puede hacer porque al tener la misma cantidad de valores que de variables se asignaron en
+#un sencillo proceso
+
+SET
+---
+Es muy similar a las lista pero con 2 peculariedades:
+
+- se pueden declarar SET() o {} sin utilizar la palabra SET
+- para escribir los elementos:
+    - si los has creados con SET() solo admitiran 1 elemento ([])
+    - si los ha creado con {} puedes poner los elementos directamente
+
+ - Solo admiten elementos únicos, si los metes repetidos, los eliminará
+ - No están ordenados por indices, al igual que dic, veras los elementos desplegados en una secuencia,
+ no podrás indexarlos, reorganizarlos ni da de su posición interna.
+ - Su posición es inmutable todas estas caracteristicas puedes almacenar cualquier tipo de dato,
+  no puedes incluir listas, diccionarios
+
+#no puedo adjuntar listas
+mi_set5 = {1,2,3,4,5,6,[7,8,9]}
+print(type(mi_set5))
+print(mi_set5)
+
+#pero si si puede un tuple, porque es inmutable como set
+mi_set6 = {1,2,3,(4,5,6),7,2,5,8}
+print(type(mi_set6))
+print(mi_set6)
+
+s1 ={1,2,3}
+s2 ={3,4,5}
+#para juntar sets
+s3= s1.union(s2)
+print(s3)
+
+#agregar elementos
+
+s1.add(6)
+print(s1)
+
+#eliminar elementos
+s1.remove(2)
+print(s1)
+#descartamos
+s1.discard(6)
+print(s1)
+
+#vaciar un elemento aleatorio
+sorteo =s1.pop()
+print(sorteo)
+
+#limpiar el set
+s1.clear()
+print(s1)
+
+BOOLEANO
+--------
+
+Se usa mucho para validación
+
+solo puede tener: True o False
+
+para declarar solo creamos una variable y se le asigna True o False
+si hacemos variable= 5<4 el resultado será True o False
+También si usamos in o is para ver si hay cierto dato dentro de una variable
+Se usan todos los simbolos de comparación
+>
+<
+!=
+==
+<=
+>=
+numero1 = bool(5>6)
+print(numero1)
+#puedo generarlo también como falso
+num=bool()
+print(num)
+
+
+lista=[1,2,3,4,5]
+control = 5 in lista
+print(control)
+print(type(control))
+
+lista2=[1,2,3,4,5]
+control = 5 not in lista2
+print(control)
+print(type(control))

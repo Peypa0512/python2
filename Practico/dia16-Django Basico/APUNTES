@@ -1,0 +1,233 @@
+PROGRAMA UNA APLICACION WEB DE TAREAS PENDIENTES
+------------------------------------------------
+
+En este dia aprenderemos a utilizar Django.
+
+Django es un Framework o un marco de trabajo para desarrollo de trabajo en web.
+
+En si mismo es un marco de trabajo en paralelo de python.
+
+Puedes trabajar en Frontend y en Backend
+
+
+ENTORNOS VIRTUALES
+------------------
+
+Es una carpeta que contiene su propio packete de python
+
+Se usan para poder trabajar con varias versiones distintas del mismo programa
+
+tendremos que instalar virtualenv
+
+dentro de la consola....
+
+pip install virtualenv
+
+si tecleamos pip freeze nos dará todas las librerias que tenemos instaladas en python
+
+vamos a crear una carpeta llamada mis_entornos y dentro de ella 2 mas con proyecto_1 y proyecto_2
+
+nos vamos dentro de mis_entornos
+dentro de proyecto_1 creamos un entorno virtual asi....
+
+virutalenv p1
+created virtual environment CPython3.10.9.final.0-64 in 729ms
+  creator CPython3Windows(dest=C:\Users\Usuario\Desktop\mis_entornos\proyecto_1\p1, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=C:\Users\Usuario\AppData\Local\pypa\virtualenv)
+    added seed packages: pip==22.3.1, setuptools==65.6.3, wheel==0.38.4
+  activators BashActivator,BatchActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+
+con esto ya lo tendriamos creado, le damos un dir y vemos si lo ha creado
+
+C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>dir
+ El volumen de la unidad C es Windows
+ El número de serie del volumen es: A811-D139
+
+ Directorio de C:\Users\Usuario\Desktop\mis_entornos\proyecto_1
+
+15/12/2022  12:10    <DIR>          .
+15/12/2022  12:09    <DIR>          ..
+15/12/2022  12:10    <DIR>          p1  ----> aqui lo tenemos
+               0 archivos              0 bytes
+               3 dirs  337.084.612.608 bytes libres
+
+para activarlo....
+
+C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>.\p1\Scripts\activate
+
+(p1) C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>      (p1)---> significa que está activado
+
+
+si pongo pip freeze me aparece que no tengo nada....
+(p1) C:\Users\Usuario\Desktop\mis_entornos\proyecto_1> pip freeze
+
+(p1) C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>
+
+Esto es debido a que no estoy en el ordenador sino en un entorno virtual, por lo que, dependiendo de lo que necesitemos
+tendremos que cargar todas las librerias que nos hagan falta para trabajar
+
+(p1) C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>pip install pyjokes
+Collecting pyjokes
+  Using cached pyjokes-0.6.0-py2.py3-none-any.whl (26 kB)
+Installing collected packages: pyjokes
+Successfully installed pyjokes-0.6.0
+
+(p1) C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>pip freeze
+pyjokes==0.6.0
+
+(p1) C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>
+
+
+creamos p2 en proyecto_2 y vamos a instalar una version anterior de pyjokes
+
+(p2) C:\Users\Usuario\Desktop\mis_entornos\proyecto_2>pip install pyjokes==0.4.0
+Collecting pyjokes==0.4.0
+  Downloading pyjokes-0.4.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: pyjokes
+Successfully installed pyjokes-0.4.0
+
+(p2) C:\Users\Usuario\Desktop\mis_entornos\proyecto_2>pip freeze
+pyjokes==0.4.0
+
+como ves puedo hacerlo distinto dependiendo del entorno virtual
+
+para desactivar un entorno solo tenemos que hacer lo siguiente....
+
+(p1) C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>deactivate
+C:\Users\Usuario\Desktop\mis_entornos\proyecto_1>    ---> ha desaparecido (p1) que me indicaba que estaba activado
+
+
+INSTALACION DJANGO
+------------------
+
+creamos un nuevo entorno virtual en la carpeta mi_web
+
+C:\Users\Usuario\Desktop\mis_entornos\miWeb>virtualenv web
+created virtual environment CPython3.10.9.final.0-64 in 499ms
+  creator CPython3Windows(dest=C:\Users\Usuario\Desktop\mis_entornos\miWeb\web, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=C:\Users\Usuario\AppData\Local\pypa\virtualenv)
+    added seed packages: pip==22.3.1, setuptools==65.6.3, wheel==0.38.4
+  activators BashActivator,BatchActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+
+C:\Users\Usuario\Desktop\mis_entornos\miWeb>dir
+ El volumen de la unidad C es Windows
+ El número de serie del volumen es: A811-D139
+
+ Directorio de C:\Users\Usuario\Desktop\mis_entornos\miWeb
+
+15/12/2022  12:23    <DIR>          .
+15/12/2022  12:22    <DIR>          ..
+15/12/2022  12:23    <DIR>          web
+               0 archivos              0 bytes
+               3 dirs  337.077.231.616 bytes libres
+
+C:\Users\Usuario\Desktop\mis_entornos\miWeb>.\web\Scripts\activate
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb>
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb>pip install django
+Collecting django
+  Downloading Django-4.1.4-py3-none-any.whl (8.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.1/8.1 MB 22.5 MB/s eta 0:00:00
+Collecting tzdata
+  Downloading tzdata-2022.7-py2.py3-none-any.whl (340 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 340.1/340.1 kB 20.6 MB/s eta 0:00:00
+Collecting asgiref<4,>=3.5.2
+  Downloading asgiref-3.5.2-py3-none-any.whl (22 kB)
+Collecting sqlparse>=0.2.2
+  Downloading sqlparse-0.4.3-py3-none-any.whl (42 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.8/42.8 kB ? eta 0:00:00
+Installing collected packages: tzdata, sqlparse, asgiref, django
+Successfully installed asgiref-3.5.2 django-4.1.4 sqlparse-0.4.3 tzdata-2022.7
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb>pip freeze
+asgiref==3.5.2
+Django==4.1.4
+sqlparse==0.4.3
+tzdata==2022.7
+
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb>mkdir src ---> creamos una carpeta fuente
+
+empezamos el proyecto poniendo este comando, crea una subcarpeta dentro de la carpeta miWeb llamada proyecto
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb\src>django-admin startproject proyecto
+
+dentro de la carpeta crea un archivo superimportante llamado:
+
+manage.py
+
+Este archivo es el que cual vamos a administar todo lo que suceda con nuestro proyecto
+
+iniciamos nuestro servidor....
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb\src\proyecto>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+         \________________________/
+         por defecto dará ese error al inicializarlo, ahora lo solucionamos
+
+Run 'python manage.py migrate' to apply them.
+December 15, 2022 - 12:33:29
+Django version 4.1.4, using settings 'proyecto.settings'
+Starting development server at http://127.0.0.1:8000/   ---> ruta web
+Quit the server with CTRL-BREAK.
+
+si vemos dentro de la carpeta nos ha creado un  nuevo archivo llamado db.sqlite3
+
+le damos a CRTL-BREAK y arreglamos el error: You have 18 unapplied migration(s)
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb\src\proyecto>python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying sessions.0001_initial... OK
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb\src\proyecto>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+December 15, 2022 - 12:42:29
+Django version 4.1.4, using settings 'proyecto.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+utilizamos CRTL+C para salir y arrancamos con la dirección http://127.0.0.1:8000/admin  nos dará un login y una
+contraseña que no tenemos, tendremos que arreglarlo así...
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb\src\proyecto>python manage.py createsuperuser
+Username (leave blank to use 'usuario'): pedro
+Email address:
+Password:           ---> peypa0308
+Password (again):   ---> peypa0308
+Superuser created successfully.
+
+(web) C:\Users\Usuario\Desktop\mis_entornos\miWeb\src\proyecto> python manage.py runserver
+
+y volvemos a probar, una vez introducido el usuario y la contraseña entramos dentro de django
+
+CONFIGURAR LOS URLS
+-------------------
+

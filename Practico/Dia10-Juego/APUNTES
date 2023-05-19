@@ -1,0 +1,429 @@
+PYGAME
+------
+
+Crear la pantalla
+-----------------
+
+lo primero hay que instalarlo desde pip
+pip install pygame
+
+
+import pygame
+
+pygame.init() --->  para inicializarlo
+
+#vamos a definir tamaño de pantalla
+
+pantalla = pygame.display.set_mode((800,600))   --->   altura y anchura en una tupla
+
+# para que la pantalla se siga viendo hay que seguir metiendo codigo
+
+se_ejecuta = True
+
+while se_ejecuta:
+    # habrá que poner cualquier evento y que va a suceder con cada uno de ellos
+
+    for evento in pygame.event.get():   --->  pygame.event.get por cada evento que haya en el juego
+        if evento.type == pygame.QUIT:  --->  si cada tipo de evento = QUIT(la X de salida de la ventana)
+            se_ejecuta = False
+
+
+CAMBIAR TITULO, ICONO Y COLOR
+-----------------------------
+
+#Titulo e Icono
+
+pygame.display.set_caption('Juego de Ovnis')
+
+para iconos flaticon.es
+icono = pygame.image.load('ovnis.png')---> carga la imagen en la variable icono
+pygame.display.set_icon(icono) ---> cambia el icono y pone la imagen elegida
+
+
+Cambiar color
+-------------
+
+pagina colorspire.com/rgb-color-wheel/
+para practicar colores en RGB
+
+para cambiar el color lo haremos dentro del while anterior
+
+pantalla.fill((205,150,228))    ---> combinacion de RGB da un color lila
+pygame.display.update()         ---> para que se actualice y ponga la pantalla de este color
+
+
+AGREGAR AL PROTAGONISTA
+-----------------------
+
+hay que tener en cuenta que hemos definido la pantalla 800 de alto * 600 de ancho, hay que disponer a los personajes
+en una coordenada determinada.
+
+img_jugador = pygame.image.load('nave-espacial.png')    ---> cargamos la imagen
+jugador_x =0    ---> posicion eje x para centrarlo habria que hacer: 800/2=400 - la mitad del icono (64 pìx) 400-32= 368
+jugador_y =0    ---> posición eje y para subir o bajar: como se quiere abajo 600-64 = posicion 536
+
+def jugador():  ---> construye la posición del personaje
+    pantalla.blit(img_jugador, (jugador_x, jugador_y))
+            \____/
+        metodo arrojar al jugador en la pantalla
+
+
+En el while tendremos que integrar al jugador
+
+jugador()   ---> hacemos llamada a la función que contiene al jugador
+
+
+MOVER AL PERSONAJE
+------------------
+
+def jugador(x,y):       ---> ahora le vamos a pasar los valores a x y a y
+    pantalla.blit(img_jugador, (x,y))---->
+
+dentro del while
+    debajo de pantalla ponemos
+    jugador_x +=0.1 ---> por cada vuelta se moverá a la derecha o -= 0.1 irá a la izquierda
+    jugador_y +=0.1 ---> por cada vuelta bajará la nave o -=0.1 subirá la nave
+
+    jugador(jugador_x, jugador_y)--> pasamos los valores para ejecutar la función jugador
+
+CONTROLAR EL MOVIMIENTO
+-----------------------
+
+para poder controlar el movimiento de la nave mediante el teclado....
+
+jugador_x_cambio = 0    ---> definimos una variable que se va a encargar del movimiento
+
+Dentro del for que hay en el while.....
+
+        if evento.type == pygame.KEYDOWN:       ---> boton presionado
+
+            if evento.key == pygame.K_LEFT:     ---> movimiento izquierda
+                jugador_x_cambio = -0.3 #para ir mas rápido aumentamos a 0.5
+                print('Flecha izquierda presionada')
+            if evento.key == pygame.K_RIGHT:    ---> movimiento derecha
+                jugador_x_cambio = +0.3
+                print('Flecha derecha presionada')
+        if evento.type == pygame.KEYUP: ---> si el boton deja de estar presionado
+
+            if evento.key == pygame.K_LEFT or evento.key == pygame.K_RIGHT:
+                jugador_x_cambio = 0
+                print("La tecla se soltó")
+
+    # llamamos a la funcion jugador
+    jugador_x += jugador_x_cambio       ---> le damos el valor de cambio a la variable jugador_x
+    jugador(jugador_x,jugador_y)
+
+
+    LIMITAR EL MOVIMIENTO
+    ----------------------
+
+    Todavía no tenemos determinados los márgenes, por lo que, puede desaparecer.
+
+    jugador_x += jugador_x_cambio
+
+    #mantener dentro de los bordes
+    if jugador_x <= 2:      ----> para el margen izquierdo
+        jugador_x = 2
+
+    if jugador_x >= 734:    ----> para el margen derecho
+        jugador_x = 734
+
+    jugador(jugador_x,jugador_y)
+
+CREAR ENEMIGOS
+---------------
+
+import random   ---> importamos la clase random para que la posición sea aleatoria
+
+creamos....
+
+# VARIABLES ENEMIGO
+img_enemigo = pygame.image.load('ovni.png')
+enemigo_x = random.randint(0,736)
+enemigo_y = random.randint(50,200)
+enemigo_x_cambio = 0
+
+# FUNCION Enemigo
+def enemigo(x,y):
+    pantalla.blit(img_enemigo, (x,y))
+
+dentro del while.....
+
+ enemigo(enemigo_x, enemigo_y)
+
+GENERAR MOVIMIENTOSENEMIGOS
+---------------------------
+
+# VARIABLES ENEMIGO
+img_enemigo = pygame.image.load('ovni.png')
+enemigo_x = random.randint(0,736)
+enemigo_y = random.randint(50,200)
+enemigo_x_cambio = 0.3  ---> le damos velocidad
+enemigo_y_cambio = 50   ---> cada vez que llegue al borde baja 50 px
+
+dentro del while....
+
+#mantener dentro de los bordes al enemigo
+
+    enemigo_x += enemigo_x_cambio
+
+    # mantener dentro de los bordes
+    if enemigo_x <= 2:
+        enemigo_x_cambio = 0.3          ---> cuando llegue a esa posición
+        enemigo_y += enemigo_y_cambio   ---> se le suma la bajada de 50 px
+
+    if enemigo_x >= 734:
+        enemigo_x_cambio = -0.3         ---> cuando llegue a esa posición
+        enemigo_y += enemigo_y_cambio   ---> se le suma la bajada de 50 px
+
+
+AGREGAR IMAGEN DE FONDO
+-----------------------
+
+para descargar la imagen de fondo
+freepik.com
+
+#Titulo e Icono
+
+pygame.display.set_caption("Juego de Ovnis")
+icono = pygame.image.load('ovnis.png')
+pygame.display.set_icon(icono)
+fondo = pygame.image.load("fondo2.png") ---> aqui cargamos el fondo de pantalla
+
+dentro del while....
+
+cambiamos ....
+pantalla.fill((205,150,228))
+
+por
+pantalla.blit(fondo,(0,0))  ---> el fondo que hemos definido y en la cordenada 0,0 para que abarque toda la pantalla
+
+
+DISPARAR BALAS
+--------------
+
+primero creamos las variables para las balas
+
+# VARIABLE DE LA BALA
+img_bala = pygame.image.load('bala.png')
+bala_x = 0
+bala_y = 500
+bala_x_cambio = 0
+bala_y_cambio = 1
+bala_visible = False
+
+creamos una funcion ....
+
+# FUNCION BALA
+def disparar_bala(x,y):
+    global bala_visible # para poder acceder a la funcion bala visible (global)
+    bala_visible = True
+    pantalla.blit(img_bala, (x+16, y+16)) # para que aparezca la bala en el centro de la nave
+
+ dentro del while creamos un nuevo evento...
+
+ #evento para disparar bala
+        if evento.key == pygame.K_SPACE:
+             disparar_bala(jugador_x, bala_y)
+
+ por último le damos movimiento
+  # movimiento de Bala
+    if bala_visible:
+        disparar_bala(jugador_x,bala_y) --->situación de la nave
+        bala_y -= bala_y_cambio
+
+  El problema es que si lo ejecutamos solo tendremos una bala y si movemos la nave, moverá la nave
+
+MOVIMIENTO DE LAS BALAS
+-----------------------
+
+Para solucionar esto....
+
+dentro del while hacemos las modificaciones siguientes
+
+ #evento para disparar bala
+            if evento.key == pygame.K_SPACE:
+                if not bala_visible :   ---> si bala visible es False
+                    bala_x = jugador_x  ---> le damos la posicion a la bala según la nave
+                    disparar_bala(bala_x, bala_y)
+
+posteriormente modificamos....
+
+    if bala_y <= -32:       #tamaño de la bala
+        bala_y = 500
+        bala_visible= False
+
+    if bala_visible:
+        disparar_bala(bala_x,bala_y)    ---> le damos la posición que ya tenemos en bala_x
+        bala_y -= bala_y_cambio
+
+
+
+DETECTAR COLISIONES
+-------------------
+
+creamos una nueva funcion que nos va a dar la distancia
+
+# Funcion Detectar Colisiones
+def hay_colision(x_1,y_1,x_2,y_2):
+    distancia = math.sqrt(math.pow(x_1-x_2,2)+math.pow(y_2-y_1,2)) # esto dará un nº de pixel de distancia
+
+    if distancia < 27:  --> si es menor de 27 recuerda que son 64 px de tamaño
+        return True
+    else:
+        return False
+
+nos vamos al while
+
+#verificacion de colision
+    colision = hay_colision(enemigo_x,enemigo_y,bala_x,bala_y) --> aqui le damos el valor tanto del enemigo como la bala
+    if colision:
+        bala_y = 500        -----> si damos a la bala vuelve a resetearse
+        bala_visible = False ----|
+        puntaje +=1 ----> creamos un contador generico al principio que será nuestro marcador de puntos
+        print(puntaje)
+        enemigo_x = random.randint(0, 736)  # cuando damos a la nave, se vuelve a reiniciar
+        enemigo_y = random.randint(50, 200)
+
+AGREGAR ENEMIGOS
+----------------
+
+modificamos la variable de enemigos
+
+# VARIABLES ENEMIGO
+img_enemigo = []    ---> hacemos listas en la cual ira guardando cada enemigo
+enemigo_x = []
+enemigo_y = []
+enemigo_x_cambio = []
+enemigo_y_cambio = []
+cantidad_enemigos =8
+
+for e in range(cantidad_enemigos):
+    img_enemigo.append(pygame.image.load('ovni.png'))
+    enemigo_x.append(random.randint(0,736))
+    enemigo_y.append(random.randint(50,200))
+    enemigo_x_cambio.append(0.5)
+    enemigo_y_cambio.append(50)
+
+modificamos la función de enemigos
+
+# FUNCION Enemigo
+def enemigo(x,y, ene):  ---> ene será la variable que se asigna a un determinado enemigo
+    pantalla.blit(img_enemigo[ene], (x,y))
+
+ya dentro del while es donde más cambios van a haber....
+
+#mantener dentro de los bordes al enemigo
+    for e in range(cantidad_enemigos):  ---> todo lo va a regir este for con la iteración de cada una de las naves
+        enemigo_x[e] += enemigo_x_cambio[e] ---> iteramos para cada uno de los enemigos
+
+    # mantener dentro de los bordes
+        if enemigo_x[e] <= 2:
+            enemigo_x_cambio[e] = 0.5
+            enemigo_y[e] += enemigo_y_cambio[e]
+
+        if enemigo_x[e] >= 734:
+            enemigo_x_cambio[e] = -0.5
+            enemigo_y[e] += enemigo_y_cambio[e]
+            # verificacion de colision  ---> todo lo que afecte a enemigos debe estar en este for
+        colision = hay_colision(enemigo_x[e], enemigo_y[e], bala_x, bala_y)
+        if colision:
+            bala_y = 500
+            bala_visible = False
+            puntaje += 1
+            print(puntaje)
+            enemigo_x[e] = random.randint(0, 736)  # cuando damos a la nave, se vuelve a reiniciar
+            enemigo_y[e] = random.randint(50, 200)
+
+        enemigo(enemigo_x[e], enemigo_y[e], e)  ---> llamamos a la función con el paramentro e de la iteración
+
+
+MOSTRAR LA PUNTUACIÓN
+---------------------
+
+Para mostrar la puntuación en la pantalla.....
+
+para cambiar las fuentes, se puede hacer desde
+1001freefonts.com
+
+
+#puntaje
+puntaje = 0
+fuente = pygame.font.Font('halfelven.ttf', 32)  ---> halfelven es la que se ha descagado tienen que ser .ttf
+texto_x = 10
+texto_y = 10
+
+creamos una nueva función.....
+
+#Función de Puntuación
+def puntuacion(x,y):
+    texto = fuente.render(f'Puntuación : {puntaje}',True,(255,255,255))
+    pantalla.blit(texto,(x,y))
+
+
+ y dentro del while hacemos la llamada a la función para que aparezca en la pantalla
+ puntuacion(texto_x,texto_y)    --> los parametros ya esta definidos arriba en las variables
+
+
+AGREGAR MUSICA Y SONIDO
+-----------------------
+
+PRIMERO HAY QUE IMPORTAR
+
+from pygame import mixer
+
+creamos las variables
+# agregar Musica
+mixer.music.load('MusicaFondo.mp3')
+mixer.music.set_volume(0.3)  # volumen
+mixer.music.play(-1)    # significa que sonará cuando termine
+
+ahora para el sonido de la bala.....
+dentro del evento de la barra espaciadora
+
+ #evento para disparar bala
+            if evento.key == pygame.K_SPACE:
+                sonido_bala = mixer.Sound('disparo.mp3')---> creamos la variable
+                sonido_bala.play()  ---> la activamos
+                if not bala_visible :
+                    bala_x = jugador_x
+                    disparar_bala(bala_x, bala_y)
+
+ el sonido para la colisión lo haremos....
+
+        if colision:
+            sonido_colision = mixer.Sound('Golpe.mp3')  ---> creamos la variable
+            sonido_colision.play()  ---> activamos el sonido
+            bala_y = 500
+            bala_visible = False
+            puntaje += 1
+
+ TERMINAR EL JUEGO
+ -----------------
+
+Creamos una variable que contiene la fuente y el tamaño
+
+# VARIABLES FINAL_JUEGO
+fuente_final = pygame.font.Font('Zanzabar Demo.otf',40)
+
+creamos una función que va a introducir en pantalla el mensaje
+
+def texto_final():
+    mi_fuente_final = fuente_final.render("JUEGO TERMINADO",True,(255,255,255))
+    pantalla.blit(mi_fuente_final,(60,200)) #centro de la pantalla
+
+y ahora vamos a donde está el movimiento de los enemigos para que nos diga cuando tiene que terminar el juego
+
+#mantener dentro de los bordes al enemigo
+    for e in range(cantidad_enemigos):
+
+        # PARA VERIFICAR SI ALGUNO HA LLEGADO ABAJO A LA ALTURA DE LA NAVE
+
+        if enemigo_y[e] > 500:----> si ha llegado a la linea donde esta nuestra nave
+            for k in range (cantidad_enemigos):
+                enemigo_y[k] = 1000     ----> si alguno de los enemigo llega
+            texto_final()           ---> ejecuta el mensaje de la función texto_final
+            break                   ---> sale del while y se da por concluido el juego
+
+
+        enemigo_x[e] += enemigo_x_cambio[e]

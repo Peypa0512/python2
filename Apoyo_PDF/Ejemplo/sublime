@@ -1,0 +1,40 @@
+<?xml version:"1.0">
+
+<producto>
+	<codigo>
+		<codigo>1</codigo>
+	</codigo>
+	<nombre>
+		<nombre>Disco duro SATA3 1TB</nombre>
+	</nombre>
+	<precio>
+		<precio>86.99</precio>
+	</precio>
+	<codigo_fabricante>
+		<codigo_fabricante>5</codigo_fabricante>
+	</codigo_fabricante>
+	<codigo>
+		<codigo>2</codigo>
+	</codigo>
+	<nombre>
+		<nombre>Memoria RAM DDR4 8GB</nombre>
+	</nombre>
+	<precio>
+		<precio>110</precio>
+	</precio>
+	<codigo_fabricante>
+		<codigo_fabricante>6</codigo_fabricante>
+	</codigo_fabricante>
+	<codigo>
+		<codigo>3</codigo>
+	</codigo>
+	<nombre>
+		<nombre>Disco SSD 1 TB</nombre>
+	</nombre>
+	<precio>
+		<precio>140.99</precio>
+	</precio>
+	<codigo_fabricante>
+		<codigo_fabricante>4</codigo_fabricante>
+	</codigo_fabricante>
+</producto>

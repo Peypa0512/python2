@@ -1,0 +1,22 @@
+<!--- Este archivo va a ser un plantilla donde vamos a coger y modificar algo --->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!--- vamos a crear bloques que posteriormente vamos a utilizar --->
+    <title>{% block title %} {%endblock%}</title>
+    <!--- vamos a cargar el fichero layout.css --->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/layout.css') }}">
+</head>
+<body>
+<!--- por si se queda pillado algo se puede utilizar para refrescar CRTL + F5 o CRTL + SHIFT + R --->
+    {% block body%} {% endblock %}
+<!--- esto es ideal para tema de estilos en todas las plantillas, cargar archivos css, json,etc.. --->
+
+<!--- vamos a cargar un archivo .js --->
+    <script src="{{url_for('static', filename='js/layout.js') }}"></script>
+
+
+</body>
+</html>

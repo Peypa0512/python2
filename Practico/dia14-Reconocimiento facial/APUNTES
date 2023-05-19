@@ -1,0 +1,259 @@
+PROGRAMA UN CONTROLADOR DE ASISTENCIA
+-------------------------------------
+
+
+INSTALAR BIBLIOTECAS DE RECONOCIMIENTO FACIAL
+---------------------------------------------
+
+Tenemos que importar varias librerias
+
+Antes de nada, hay que instalar visual Studio y una cosa muy importante, en la instalación tenemos que seleccionar la
+opcion:
+
+        "DESARROLLO PARA EL ESCRITORIO CON C++""
+
+Esto es muy importante, ya que muchas libreria va a necesitar que tengamos esto descargado
+
+    estas son las librerias
+         - cmake
+         - dlib
+         - face-recognition
+         - numPy
+         - opencv-pyhton    ---> a mi la version 4.6 me ha dado problema y la he bajado a la 4.4
+
+    from cv2 import cv2 -->opencv   se puede también hacer import cv2
+    import face_recognition as fc   ---> le ponemos un sobrenombre para no tener que estar escribiendo todo
+
+CARGAR IMAGENES
+---------------
+
+# VAMOS A CARGAR LAS IMAGENES
+foto_control = fr.load_image_file('FotoA.jpg')
+foto_prueba = fr.load_image_file('FotoB.jpg')
+
+# hay que pasar los colores de las fotos a rgb
+foto_control = cv2.cvtColor(foto_control, cv2.COLOR_BGR2RGB)
+foto_prueba = cv2.cvtColor(foto_prueba, cv2.COLOR_BGR2RGB)
+
+#mostar imagenes
+cv2.imshow('foto control', foto_control)
+cv2.imshow('foto prueba', foto_prueba)
+
+# mantenemos el programa abierto
+cv2.waitKey(0)
+
+MARCAR CARAS
+------------
+
+declaramos estas variables
+# localizar cara control
+lugar_cara_A= fr.face_locations(foto_control)[0]
+
+#codificar la variable
+cara_codificada_A = fr.face_encodings(foto_control)[0]
+
+'''el sistema identifica la cara, lo que vamos a hacer es que el usuario humano vea donde está la cara y
+la pueda enmarcar'''
+
+print(lugar_cara_A)
+Resultado   --- > (139, 454, 268, 325)
+
+Esto es:       139 en el eje de x
+               454 que me daria la parte derecha
+               268 en el eje de y
+               325 que me daria la parte izquierda
+
+lo que me dá es un rectángulo en el cual identifica la cara
+
+el codigo al final quedaría así....
+
+# localizar cara control---> debemos hacer en todas las foto lo mismo
+lugar_cara_A= fr.face_locations(foto_control)[0]
+
+#codificar la variable
+cara_codificada_A = fr.face_encodings(foto_control)[0]
+
+#localizar cara prueba----> esta será la que se comparé con la cara control
+lugar_cara_B= fr.face_locations(foto_prueba)[0]
+
+#codificar la variable
+cara_codificada_B = fr.face_encodings(foto_prueba)[0]
+
+#mostrar rectangulo
+cv2.rectangle(foto_control,(lugar_cara_A[3],lugar_cara_A[0]), (lugar_cara_A[1], lugar_cara_A[2]), (0,255,0), 2)
+cv2.rectangle(foto_prueba,(lugar_cara_B[3],lugar_cara_B[0]), (lugar_cara_B[1], lugar_cara_B[2]), (0,255,0),  2)
+    \_______/                          \_/                                                       \_______/  \_/
+    pinta un rectangulo                lados                                                      verde     borde
+
+#mostar imagenes
+cv2.imshow('foto control', foto_control)
+cv2.imshow('foto prueba', foto_prueba)
+
+COMPARAR CARAS
+--------------
+
+#realizar comparacion
+resultado = fr.compare_faces([cara_codificada_A],cara_codificada_B)
+print(resultado)    ---> [True]
+
+da True porque el punto de comparación o distancia entre las caras  está por debajo de 0,6
+
+MODIFICAR DIFERENCIA(DISTANCIA)
+-------------------------------
+fr si la distancia es mayor de 0,6 y menor 0,6 hay coincidencia.
+Se puede modificar para que sea más amplio o más explicito
+
+# medida distancia
+distancia = fr.face_distance([cara_codificada_A], cara_codificada_B)        ---> me dice la distancia
+print(distancia)    ---> [0.4321014]
+distancia1 = fr.compare_faces([cara_codificada_A],cara_codificada_B,0.3)    ---> puedo regular el limite de tolereancia
+print(distancia1)   ---> [False]
+
+MOSTRAR LA DISTANCIA
+--------------------
+
+# mostrar resultado
+cv2.putText(foto_prueba, f'{resultado}, {distancia.round(2)}', (50,50), cv2.FONT_HERSHEY_COMPLEX, 1, (0,255,0), 2)
+                                                                                                 \_/           \_/
+                                                                                          escala Fuente       borde
+
+
+
+Proyecto 14
+-----------
+
+Tenemos que hacer un programa de asistencia de un lugar de trabajo, y si aparece en el reconocimiento facial entraria
+sino no
+
+from cv2 import cv2
+import face_recognition as fr
+import os
+
+
+#CREAMOS LA BASE DE DATOS
+
+ruta = 'Empleados'
+mis_imagenes = []
+nombres_empleados =[]
+lista_empleados = os.listdir(ruta)
+
+#cargamos las imagaenes
+
+for nombre in lista_empleados:
+    imagen_actual = cv2.imread(f'{ruta}/{nombre}')
+    mis_imagenes.append(imagen_actual)
+    nombres_empleados.append(os.path.splitext(nombre)[0])
+
+#codificar imagenes
+
+def codificar(imagenes):
+    #creamos una lista nueva codificada
+    lista_codificada =[]
+
+    #pasar todas las imagenes a RGB
+    for imagen in imagenes:
+        imagen = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)    ---> lo pasamos a rgb
+
+        #codificamos las imagenes
+        codificado = fr.face_encodings(imagen)[0]
+
+        # agregar a la lista
+        lista_codificada.append(codificado) ---> añadimos la imagen a la lista
+
+    # retorna lista_codificada
+    return lista_codificada
+
+lista_empleados_codificada = codificar(mis_imagenes)    ---> el ejecutable
+
+# de momento al darle al print me tiene que dar como resultado 5
+
+print(len(lista_empleados_codificada))  ---> 5
+
+ ENCONTRAR COINCIDENCIAS EN LA BASE DE DATOS
+ -------------------------------------------
+
+ No estamos comparando ahora una foto con una foto, sino con una lista
+
+ # tomar una imagen  de camara web
+
+captura = cv2.VideoCapture(0, cv2.CAP_DSHOW)    --> hace la captura de la camara web
+
+#leer la imagen de la camara
+
+exito, imagen = captura.read()
+
+if not exito:
+    print("No se ha podido obtener la captura")
+else:
+
+    #reconocer cara en la captura
+    cara_captura= fr.face_locations(imagen)
+    # codifica la cara capturada
+    cara_captura_codificada = fr.face_encodings(imagen, cara_captura)   ---> hacemos una lista de imagen con cara_captura
+    # buscar coincidencias
+    for caracodif, caraubic in zip(cara_captura_codificada, cara_captura):
+        coincidencias = fr.compare_faces(lista_empleados_codificada, caracodif)
+        distancias = fr.face_distance(lista_empleados_codificada, caracodif)
+        print(distancias)
+
+        indice_coincidencia = numpy.argmin(distancias)  ---> ponemos el minimo de todas las distancias
+
+        #mostrar coincidencias
+        if distancias[indice_coincidencia] >6 :
+            print('No coincide con ninguno de nuestros empleados')
+        else:
+            print('Bienvenido al trabajo')
+
+    en este caso, y no tener foto, doy el pego por el registro nº 3 que es Fede (UPS!!!)
+
+
+MOSTRAR COINCIDENCIAS
+---------------------
+
+if not exito:
+    print("No se ha podido obtener la captura")
+else:
+
+    #reconocer cara en la captura
+    cara_captura= fr.face_locations(imagen)
+    # codifica la cara capturada
+    cara_captura_codificada = fr.face_encodings(imagen, cara_captura)
+    # buscar coincidencias
+    for caracodif, caraubic in zip(cara_captura_codificada, cara_captura):
+        coincidencias = fr.compare_faces(lista_empleados_codificada, caracodif)
+        distancias = fr.face_distance(lista_empleados_codificada, caracodif)
+        print(distancias)
+
+        indice_coincidencia = numpy.argmin(distancias)
+
+        #mostrar coincidencias
+        if distancias[indice_coincidencia] >6 :
+            print('No coincide con ninguno de nuestros empleados')
+        else:
+            # buscar el nombre del empleado encontrado
+            nombre = nombres_empleados[indice_coincidencia]
+
+
+            y1,x2,y2,x1 = caraubic  ---> esto sale de la siguiente explicacion...
+***********************************************************************************************************
+    Cuando hacemos el zip de caracodif y caraubic al hacer el zip cogerá los valores de
+    zip(cara_captura_codificada, cara_captura), que a su vez es el resultado de
+    cara_captura= fr.face_locations(imagen) ---> al hacer face_location me dará el resultado en numeros
+************************************************************************************************************
+
+            cv2.rectangle(imagen, (x1, y1), (x2, y2), (0,255,0),2)
+            cv2.rectangle(imagen,(x1, y2 -35), (x2, y2),(0,255,0), cv2.FILLED)
+            cv2.putText(imagen, nombre, (x1 + 6, y2 -6),cv2.FONT_HERSHEY_DUPLEX,0.7,(255,255,255), 2)
+
+
+            # mostrar la imagen obtenida
+            cv2.imshow('Imagen Web', imagen)
+
+            # mantener ventana abierta
+            cv2.waitKey(0)
+
+  REGISTRAR ASISTENCIA
+  --------------------
+
+  VAMOS A CREAR OTRA FUNCION
+

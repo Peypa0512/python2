@@ -1,0 +1,615 @@
+APUNTES
+-------
+Hoy utilizaremos el GUI de python con TKinter
+
+CONFIGURAR LA VENTANA
+---------------------
+from tkinter import *
+
+# vamos a iniciar a tkinter
+aplicacion = Tk()
+
+# tamaño de la ventana
+aplicacion.geometry('1020x630+0+0') ---> +0+0 >> significa eje x = 0, eje y =0
+
+#evitar maximizar
+aplicacion.resizable(0,0)   ---> con 0,0 desabilitamos la posibilidad
+
+#Titulo de la ventana
+aplicacion.title('Restaurante la Maruja - SISTEMA DE FACTURACION')
+
+#COLOR DE FONTO
+aplicacion.config(bg='burlywood1')
+
+# evitar que la ventana se cierre
+aplicacion.mainloop()   ---> esto mantendrá la ventana siempre abierta hasta que le demos a la X
+
+PANELES
+--------
+
+panel_superior= Frame(aplicacion,bd=1,5, relief =  )
+                                 \____/ \________/
+                                 bordes   relieve
+
+RELIEVEF tiene varias clases:
+
+    -   FLAT    ---> estilo normal
+    -   RAISED  ---> este es más resaltado los bordes
+    -   SUNKEN  --->
+    -   GROOVE  --->
+    -   RIDGE   --->
+
+#Titulo del panel superior
+
+etiqueta_titulo = Label(panel_superior, text='Sistema de facturación', fg = 'azure', font=('Dosis', 54),
+                        bg ='burlywood3', width = 27)
+etiqueta_titulo.grid(row=0, column=0)   ---> donde va a ir alojado linea 0 columna 0
+
+# panel Izquierdo
+
+panel_izquierdo = Frame(aplicacion,bd=1, relief= RIDGE)
+panel_izquierdo.pack(side=LEFT)
+
+#Panel subtotal
+panel_costos = Frame(panel_izquierdo, bd=1, relief=RIDGE)
+panel_costos.pack(side=BOTTOM)
+
+# panel comidas
+panel_comidas = LabelFrame(panel_izquierdo,text="Comida", font=('Dosis',19,'bold'), bd=1,relief=RIDGE, fg='azure')
+panel_comidas.pack(side=LEFT)
+
+#panel bebidas
+
+panel_bebidas = LabelFrame(panel_izquierdo,text="Bebidas", font=('Dosis',19,'bold'), bd=1,relief=RIDGE, fg='azure')
+panel_bebidas.pack(side=LEFT)
+
+#panel postres
+
+panel_postres = LabelFrame(panel_izquierdo,text="Postres", font=('Dosis',19,'bold'), bd=1,relief=RIDGE, fg='azure')
+panel_postres.pack(side=LEFT)
+
+
+# PANEL DERECHA
+panel_derecha = Frame(aplicacion, bd=1, relief= RIDGE)
+panel_derecha.pack(side=RIGHT)
+
+#panel calculadora
+
+panel_calculadora = Frame(panel_derecha,bd=1, relief=RIDGE, bg='burlywood')
+panel_calculadora.pack()
+
+#panel Recibo
+
+panel_recibo = Frame(panel_derecha,bd=1, relief=RIDGE, bg='burlywood')
+panel_recibo.pack()
+
+#panel Botones
+
+panel_botones = Frame(panel_derecha,bd=1, relief=RIDGE, bg='burlywood')
+panel_botones.pack()
+
+
+Con esto ya tendriamos designado los paneles si ejecutamos solo veremos un puntito en cada lado que correponde con
+todo esto, pero solo se empezará ver los resultados cuando empecemos con cada panel
+
+CHECK BUTTONS
+-------------
+
+para poder ver por ejemplo los distintos platos que tenemos tendremos que hacer una lista que contenga todos ellos
+para poder consultarlos posteriormente
+
+# Lista de productos
+lista_comida=['Pollo','Cordero','Salmón','Merluza','Kebap','Durum','Pizza']
+lista_bebida=['Agua Mineral','Cerveza','Refrescos','Zumos','Vinos Blancos','Vinos Tintos','Vinos Rosados']
+lista_postres=['Tartas','Bollerias','Helados','Frutas','Turrones','Mazapanes','Roscón']
+
+# ahora tendremos que cargar todo ello mediante un loop
+
+# para ello utilizaremos un checkButton
+
+contador= 0
+for comida in lista_comida:
+    comida= Checkbutton(panel_comidas,text=comida.title(), font=('Dosis',19,'bold'), onvalue=1, offvalue= 0)
+                                                                                    \_____________________/
+                                                                                     valor del checkbutton
+                                                                                     1 = activado
+                                                                                     0 = desactivado
+    comida.grid(row = contador, column = 0, sticky=W) ---> le asignamo la disposición y
+    contador +=1                            \_______/
+                                 justificado texto izquierdo de la pantalla
+
+
+tenemos que guardarár el valor del checkbutton, tendremos que crear una lista para ir añadiendo ahi
+
+
+variable_comida=[]  ---> creamos la lista
+contador= 0
+for comida in lista_comida:
+    variable_comida.append('')  ---> la ponemos como vacia
+    variable_comida[contador]= IntVar() ---> variable integer es una clase de Tkinterque nos permite crear estas
+                                             variables especificas, en cada loop creará un intVar que guardará el valor
+    comida= Checkbutton(panel_comidas,text=comida.title(), font=('Dosis',19,'bold'), onvalue=1, offvalue= 0,
+                        variable= variable_comida)
+
+    comida.grid(row = contador, column = 0, sticky=W)
+    contador +=1
+
+
+Para que hagamos las 2 listas que todavia nos falta lo que haremos es copiar y sustituir por los distintos productos
+
+CUADROS DE ENTRADA
+-------------------
+Es donde el usuario pondrá cuanto se ha consumido, utilizaremos un loop para ello
+
+#Generar variable items comida
+variable_comida = []
+cuadros_comida = [] ---> creamos lista
+texto_comida = []   ---> creamos lista
+contador = 0
+for comida in lista_comida:
+
+    #crear checkbutton
+    variable_comida.append('')
+    variable_comida[contador]= IntVar()
+    comida= Checkbutton(panel_comidas,text=comida.title(), font=('Dosis',19,'bold'), onvalue=1, offvalue= 0,
+                        variable= variable_comida)
+
+    comida.grid(row = contador, column = 0, sticky=W)
+
+
+    # visualizar los cuadros de entrada
+    cuadros_comida.append('')   ---> lo inicializamos
+    texto_comida.append('') ----> lo inicializamos
+    cuadros_comida[contador] = Entry(panel_comidas, font=('Dosis', 18,'bold'), bd=1,width=6, state=DISABLED,
+                               \___/                                                         \_____________/
+                         cuadro de entrada                        estado desactivado hasta que no se active el checkbox
+                                     textvariable = texto_comida[contador])
+                                     \___________/
+                                asociarlo a una variable
+
+
+    cuadros_comida[contador].grid(row= contador, column=1)  ---> le damos la columna1 para que nos aparezca a lado
+    contador += 1
+
+Esto lo tendremos que hacer con los otros productos (bebidas y postres)
+
+
+VALORES POR DEFECTO
+-------------------
+
+hay que poner un valor por defecto (0), para que cuando se cheque una comida poder poner la cantidad
+
+para ello nos colocamos aquí antes de entrar en el panel
+
+ # visualizar los cuadros de entrada
+    cuadros_comida.append('')
+    texto_comida.append('')
+    texto_comida[contador] = StringVar()    ---> es una variable String de la clase tkinter
+    texto_comida[contador].set('0') ---> le decimos que el valor por defecto va a ser 0 hasta que se modifique
+    cuadros_comida[contador] = Entry(panel_comidas........
+
+
+PANEL DE SUBTOTALES
+-------------------
+
+ PANEL DE SUBTOTALES
+#creamos la variables que necesitamos comida
+var_coste_comida = StringVar()  ---> creamos las variables que necesitamos
+var_coste_bebida = StringVar()
+var_coste_postre = StringVar()
+var_Subtotal = StringVar()
+var_Impuesto = StringVar()
+var_Total = StringVar()
+
+#etiqueta de Comida
+etiqueta_coste_comida = Label(panel_costos, text='Coste Comida', font=('Dosis', 12, 'bold'),
+                              bg='azure4', fg='white')
+etiqueta_coste_comida.grid(row=0, column=0)
+
+#Cuadro de entrada
+texto_coste_comida = Entry(panel_costos, font=('Dosis',12,'bold'), bd= 1, width= 10, state='readonly',--> solo lectura
+                           textvariable=var_coste_comida)
+texto_coste_comida.grid(row=0, column=1, padx=41)   ---> para ensanchar
+
+BOTONES Y RECIBOS
+-----------------
+
+    Vamos a hacer la parte derecha de la pantilla
+
+# botones
+botones =['total','recibo','guardar','resetear']    --->creamos una lista con los nombres de los botones
+columnas =0
+for boton in botones:   ---> por cada vuelta irá creando cada boton
+    boton = Button(panel_botones, text= boton.title(), font=('Dosis',14,'bold'), fg= 'white', bg='azure4',
+                   bd=1, width= 9)
+    boton.grid(row=0, column=columnas)
+    columnas +=1
+# recibo
+texto_recibo = Text(panel_recibo, font=('Dosis',12,'bold'), bd=1,width=42,height=10)
+texto_recibo.grid(row=0,column=0)
+
+CALCULADORA
+-----------
+Es el último elemento, tendremos que crear la calculadora con:
+
+            ---------------------------------------------------------------- \
+            |                                                              |  |
+            ----------------------------------------------------------------  |
+            |      7       |       8       |        9      |      +        |  |
+            |______________|_______________|_______________|_______________|  |
+            |     4        |       5       |        6      |      -        |  \
+            |______________|_______________|_______________|_______________|   | 5 columnas
+            |      1       |       2       |        3      |      *        |  /
+            |______________|_______________|_______________|_______________|  |
+            |     CE       |    BORRAR     |        0      |       /       |  |
+            |______________|_______________|_______________|_______________|  /
+            \___________________________   ________________________________/
+                                         \/
+                                         4 filas
+
+
+# calculadora
+
+visor_calculadora = Entry(panel_calculadora, font=('Dosis',14,'bold'), width= 32, bd =1)
+visor_calculadora.grid(row=0, column=0, columnspan=4)----> nos aseguramos de que ocupe todo (ampliación de la columna)
+
+# vamos a hacer la calculadora
+
+botones_calculadora= ['7','8','9','+','4','5','6','-',
+                      '1','2','3','x','R','Borrar','0','/']
+
+#creamos una variable
+fila = 1
+columna = 0
+
+for boton in botones_calculadora:
+    boton = Button(panel_calculadora, text=boton.title(), font=('Dosis',10,'bold'),
+                    fg='white',bg='azure4',bd=1,width=10)
+    boton.grid(row=fila, column=columna)
+    if columna == 3:
+        fila += 1
+    columna += 1
+    if columna ==4:
+        columna=0
+
+
+FUNCIONALIDAD DE LA CALCULADORA
+--------------------------------
+
+Tenemos 16 botones que nos va a mostrar en pantalla que lo hemos pulsado (1,2....+,/)
+luego tenemos el boton de Borrar y el de Resultado que estos si tienen funcionalidad
+
+lo primero que tendremos que hacer es declarar una variable operador y unas funciones para que realicen las distintas
+operaciones
+
+#creamos esta variable para definir los botones
+operador = ''
+
+def click_boton(numero):
+    global operador
+    operador = operador + numero    ---> guardamos en la variable el número que estamos tecleando
+    visor_calculadora.delete(0,END) ---> si pulsamos varios numeros saldrán 1 a uno y no todo lo que tenga almacenado
+    visor_calculadora.insert(END, operador) ---> inserta en el visor el número pulsado
+
+def borrar():
+    global operador
+    operador = ''   ---> reseteamos para que no vuelva a salir lo que tiene almacenado operador
+    visor_calculadora.delete(0,END) ---> simplemente borra la pantalla
+
+def obtener_resultado():
+    global operador
+    resultado = str(eval(operador)) ---> eval entiende que hay una operacion matematica y la realiza
+    visor_calculadora.delete(0, END)    ---> reseteamos visor_calculadora para que nos muestre el resultado
+    visor_calculadora.insert(0,resultado)   ---> muestra el resultado
+    operador = ''
+
+
+   posteriormente en la zona donde hemos definido los botones
+
+   # vamos a hacer la calculadora
+
+botones_calculadora= ['7','8','9','+','4','5','6','-',
+                      '1','2','3','x','R','Borrar','0','/']
+botones_guardados =[]   ---> creamos esta lista que va a guardar los números
+
+#creamos una variable
+fila = 1
+columna = 0
+
+for boton in botones_calculadora:
+    boton = Button(panel_calculadora, text=boton.title(), font=('Dosis',10,'bold'),
+                    fg='white',bg='azure4',bd=1,width=10)
+
+    botones_guardados.append(boton) ---> cada vez que genere un boton guardará aqui el número
+
+    boton.grid(row=fila, column=columna)
+    if columna == 3:
+        fila += 1
+    columna += 1
+    if columna ==4:
+        columna=0
+
+#FUNCIONALIDAD DE LA CALCULADORA
+
+#empezamos con los botones que se va mostrar en pantalla
+botones_guardados[0].config(command=lambda: click_boton('7'))
+botones_guardados[1].config(command=lambda: click_boton('8'))
+botones_guardados[2].config(command=lambda: click_boton('9'))
+botones_guardados[3].config(command=lambda: click_boton('+'))
+botones_guardados[4].config(command=lambda: click_boton('4'))
+botones_guardados[5].config(command=lambda: click_boton('5'))
+botones_guardados[6].config(command=lambda: click_boton('6'))
+botones_guardados[7].config(command=lambda: click_boton('-'))
+botones_guardados[8].config(command=lambda: click_boton('1'))
+botones_guardados[9].config(command=lambda: click_boton('2'))
+botones_guardados[10].config(command=lambda: click_boton('3'))
+botones_guardados[11].config(command=lambda: click_boton('*'))  ---> tenemos que definir '*' para multiplicar
+botones_guardados[12].config(command=obtener_resultado) ----> esta será la tecla de Resultado
+botones_guardados[13].config(command=borrar)            ----> esta será la tecla de Borrar
+botones_guardados[14].config(command=lambda: click_boton('0'))
+botones_guardados[15].config(command=lambda: click_boton('/'))
+
+
+CONFIGURAR LOS CHECKBUTTONS
+---------------------------
+tenemos que habilitarlos para poder poner la cantidad que se va a cobrar
+
+Debemos de crear una función que verifique si si hacemos un check se active y si lo volvemos a dar se desactive
+para ellos hacemos lo siguiente:
+
+def revisar_check():
+    # va a llamar a esta función cada vez que se activa un checkbutton
+    x= 0
+    for c in cuadros_comida:
+        if variable_comida[x].get() == 1:   ---> le decimos que el valor que le asignamos es 1
+            cuadros_comida[x].config(state=NORMAL)  ---> la configuracion pasa de disable a normal
+            if cuadros_comida[x].get() == '0':  ---> solo si no hay nada borrará sino cualquier cantidad la elimina
+                cuadros_comida[x].delete(0,END) ---> borramos el 0 que aparece inicialmente
+            cuadros_comida[x].focus()       ---> y ponemos el cursor latente para que introduzca cantidad
+        else:
+            cuadros_comida[x].config(state=DISABLED)    ---> la configuración pasa a ser DISABLED
+            texto_comida[x].set('0')                    ---> le damos el valor a texto_comida de 0
+        x +=1
+
+    x = 0
+    for c in cuadros_bebida:
+        if variable_bebida[x].get() == 1:
+            cuadros_bebida[x].config(state=NORMAL)
+            if cuadros_bebida[x].get() == '0':
+                cuadros_bebida[x].delete(0,END)
+            cuadros_bebida[x].focus()
+        else:
+            cuadros_bebida[x].config(state=DISABLED)
+            texto_bebida[x].set('0')
+        x +=1
+
+    x = 0
+    for c in cuadros_postre:
+        if variable_postre[x].get() == 1:
+            cuadros_postre[x].config(state=NORMAL)
+            if cuadros_postre[x].get() == '0':
+                cuadros_postre[x].delete(0,END)
+            cuadros_postre[x].focus()
+        else:
+            cuadros_postre[x].config(state=DISABLED)
+            texto_postre[x].set('0')
+        x +=1
+
+    nos tenemos que desplazar a donde hemos definido el check button y hacer lo siquiente en los 3 que hemos hecho
+
+    #crear checkbutton
+    variable_comida.append('')
+    variable_comida[contador]= IntVar()
+    comida= Checkbutton(panel_comidas,text=comida.title(), font=('Dosis',16,'bold'), onvalue=1, offvalue= 0,
+                        variable= variable_comida[contador], command=revisar_check)
+                                                             \_____________________/
+                                                   llamamos a la función de chequeo, y nos dira en que estado está
+
+
+    CALCULAR TOTALES
+    ----------------
+
+Tenemos que darle funcionalidad al boton de total para que empiece a hacer todos los calculos
+
+lo primero es tener una lista de precios
+#vamos a crear 3 variables con los precios
+precios_comida = [1.32, 1.65, 2.31, 3.22, 1.22, 1.99, 2.05]
+precios_bebida = [0.25, 0.99, 1.21, 1.54, 1.08, 1.10, 2.00]
+precios_postres = [1.54, 1.68, 1.32, 1.97, 2.55, 2.14, 1.94]
+
+
+
+Tenemos que crear una función donde vamos a hacer todos estos cálculos
+
+def total():
+    #cuando pulse tendrá que sumar todo lo que haya
+    subtotal_comida =0
+    p =0
+    for cantidad in texto_comida:
+        subtotal_comida= subtotal_comida+(float(cantidad.get())*precios_comida[p])
+        p+=1
+
+
+    subtotal_bebida = 0
+    p = 0
+    for cantidad in texto_bebida:
+        subtotal_bebida= subtotal_bebida+(float(cantidad.get())*precios_bebida[p])
+        p+=1
+
+
+    subtotal_postre = 0
+    p = 0
+    for cantidad in texto_postre:
+        subtotal_postre= subtotal_postre+(float(cantidad.get())*precios_postres[p])
+        p+=1
+
+    subtotal = subtotal_comida+subtotal_bebida+subtotal_postre
+    impuestos = subtotal*0.07
+    total = subtotal+impuestos
+
+    var_coste_comida.set(f'{round(subtotal_comida,2)} €')   ---> redondeamos a 2 decimales
+    var_coste_bebida.set(f'{round(subtotal_bebida, 2)} €')
+    var_coste_postre.set(f'{round(subtotal_postre, 2)} €')
+    var_Subtotal.set(f'{round(subtotal, 2)} €')
+    var_Impuesto.set(f'{round(impuestos, 2)} €')
+    var_Total.set(f'{round(total, 2)} €')
+    \________/
+    está definido en....
+
+    # PANEL DE SUBTOTALES
+#creamos la variables que necesitamos comida
+var_coste_comida = StringVar()
+var_coste_bebida = StringVar()
+var_coste_postre = StringVar()
+var_Subtotal = StringVar()
+var_Impuesto = StringVar()
+var_Total = StringVar()
+
+tenemos que hacer también lo siguiente
+
+# botones
+botones =['total','recibo','guardar','resetear']
+botones_creado=[]   ---> creamos una funcion donde vamos a hacer la llamada a la funcion
+columnas =0
+for boton in botones:
+    boton = Button(panel_botones, text= boton.title(), font=('Dosis',10,'bold'), fg= 'white', bg='azure4',
+                   bd=1, width= 9)
+
+    #añadimos a la lista creada ahora
+    botones_creado.append(boton)    ---> añadimos a boton
+    boton.grid(row=0, column=columnas)
+    columnas +=1
+
+#creamos el acceso a la funcion total   ---> hacemos la llamada a la funcion total
+botones_creado[0].config(command=total)
+
+
+GENERAR RECIBO
+--------------
+
+Vamos a generar el recibo cuando pulsemos al boton recibo.
+
+importamos la clase random para generar nº de albarán aleatorio
+importamos tambien la clase datetime
+
+import random
+import datetime
+
+hacemos una función para que vaya creandolo
+
+def recibo():
+    texto_recibo.delete(1.0, END)
+    num_recibo = f'N# - {random.randint(1000,9999)}'    ---> crea el nº de albaran aleatoriamente
+    fecha = datetime.datetime.now()
+    fecha_recibo = f'{fecha.day}/{fecha.month}/{fecha.year}--{fecha.hour}:{fecha.minute}' ---> le damos formato a fecha
+    texto_recibo.insert(END, f'Datos:\t{num_recibo}  \t{fecha_recibo}\n')   ---> cabecera del recibo
+    texto_recibo.insert(END,f'*'*49+'\n')
+    texto_recibo.insert(END, 'Items\t\tCant.\tCoste Items \n')
+    texto_recibo.insert(END,f'-'*63+'\n')
+
+    #ahora tenemos que ver que ha consumido, cantidad y precio de cada plato
+   #para comidas
+    x =0
+    for comida in texto_comida: ---> para que vaya cogiendo los datos de lo que se ha consumido
+        if comida.get() !='0':
+            texto_recibo.insert(END,f'{lista_comida[x]}\t\t{comida.get()}\t{int(comida.get())*precios_comida[x]} €\n')
+        x +=1
+    #para bebidas
+    x = 0
+    for bebida in texto_bebida:
+        if bebida.get() != '0':
+            texto_recibo.insert(END,f'{lista_bebida[x]}\t\t{bebida.get()}\t{int(bebida.get()) * precios_bebida[x]} €\n')
+        x += 1
+    # para postres
+    x = 0
+    for postre in texto_postre:
+        if postre.get() != '0':
+            texto_recibo.insert(END,f'{lista_postres[x]}\t\t{postre.get()}'
+            f'\t{round(int(postre.get()) * precios_postres[x],2)} €\n')
+        x += 1
+
+    texto_recibo.insert(END, f'-' * 63 + '\n')
+    texto_recibo.insert(END, f'Precio de la Comida:\t\t  {var_coste_comida.get()}\n')   ---> detallado por platos
+    texto_recibo.insert(END, f'Precio de la Bebida:\t\t    {var_coste_bebida.get()}\n')
+    texto_recibo.insert(END, f'Precio de los Postres:\t\t{var_coste_postre.get()}\n')
+    texto_recibo.insert(END, f'-' * 63 + '\n')
+    texto_recibo.insert(END, f'Subtotal:\t\t{var_Subtotal.get()}\n')    ---> subtotales y Total del recibo
+    texto_recibo.insert(END, f'Impuestos:\t\t {var_Impuesto.get()}\n')
+    texto_recibo.insert(END, f'Total:\t\t{var_Total.get()}\n')
+    texto_recibo.insert(END, f'-' * 63 + '\n')
+    texto_recibo.insert(END,'Gracias por su visita\n')
+    texto_recibo.insert(END, '\n')
+    texto_recibo.insert(END, f'*' * 53 + '\n')
+
+
+GUARDAR RECIBO EN UN FICHERO
+----------------------------
+
+Tenemos que hacer 3 cosas
+lo primero crear la llamada con
+botones_creado[2].config(command=guardar)
+
+tendremos que importar estas 2 clases
+
+from tkinter import filedialog,messagebox
+                    \________/ \________/
+            dialogo de archivo    caja de mensaje
+
+Hacemos la funcion de guardar
+
+def guardar():
+
+    # toma la informacion del recibo y lo mete en una variable
+    info_recibo = texto_recibo.get(1.0,END) ---> 1.0: desde el inicio , END: hasta el final del recibo
+    archivo = filedialog.asksaveasfile(mode='w',defaultextension='.txt')
+                         \___________/
+                      como se va a salvar
+    archivo.write(info_recibo)
+    archivo.close()
+    messagebox.showinfo('Información','Su recibo ha sido guardado') ---> mensaje en pantalla con la información
+
+    RESETEAR LA PANTALLA
+    --------------------
+
+lo primero que tenemos que hacer es darle la función al boton resetear
+
+botones_creado[3].config(command=resetear)
+
+creamos la función resetear
+
+def resetear():
+    # texto recibo
+    texto_recibo.delete(0.1,END)
+    # cantidades de platos
+    for texto in texto_comida:
+        texto.set('0')
+    for texto in texto_bebida:
+        texto.set('0')
+    for texto in texto_postre:
+        texto.set('0')
+    # desabilitar checkbox
+    for cuadro in cuadros_comida:
+        cuadro.config(state=DISABLED)
+    for cuadro in cuadros_bebida:
+        cuadro.config(state=DISABLED)
+    for cuadro in cuadros_postre:
+        cuadro.config(state=DISABLED)
+    # desabilitar variables( guarda el valor 0 0 1 del checkbuton
+
+    for v in variable_comida:
+        v.set(0)
+    for v in variable_bebida:
+        v.set(0)
+    for v in variable_postre:
+        v.set(0)
+
+    # limpiar el cuadro de los subtotales
+
+    var_coste_comida.set('')
+    var_coste_bebida.set('')
+    var_coste_postre.set('')
+    var_Subtotal.set('')
+    var_Impuesto.set('')
+    var_Total.set('')
+
+

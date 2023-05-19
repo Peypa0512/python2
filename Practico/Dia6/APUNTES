@@ -1,0 +1,468 @@
+DIA 6
+------
+
+Manipulación de Archivos
+------------------------
+
+Open()---> apertura archivos
+------
+
+mi_archivo.read()---> lee el archivo
+-----------------
+
+mi_archivo.realine()--> lee una línea
+--------------------
+
+Python reconoce los saltos de líneas de los archivos, si se desean quitarlos hay que emplear
+el metodo rstrip()
+
+una_linea = mi_archivo.readline()
+print(una_linea.rstrip())
+
+Al ser una cadena de String se puede utilizar todos los métodos que con ello conlleva.
+
+una_linea = mi_archivo.readline()
+print(una_linea.capitalize())
+
+podemos pasarlo por un for para que nos devuelva todas las líneas
+
+for l in mi_archivo:
+    print("aqui dice: "+l )
+
+mi_archivo.readlines()
+-----------------------
+
+todas = mi_archivo.readlines()
+print(todas)----> el resultado es....
+
+['Soy la primera linea\n', '¡Vaya! ¡Yo soy la segunda!\n', 'He quedado tercera']
+
+Me dará una lista que tiene 3 elementos, yo puedo aplicar los métodos de listas
+
+todas= todas.pop()---> me sacará el último valor de la lista "He quedado tercera"
+
+EJERCICIO 1
+-----------
+Abre el archivo texto.txt e imprime su contenido.
+
+Nota: el archivo se encuentra guardado en la misma carpeta donde se aloja tu código
+
+mi_archivo2=open("texto.txt")
+print(mi_archivo2.read())
+mi_archivo2.close()
+
+EJERCICIO 2
+-----------
+
+mi_archivo = open("texto.txt")
+print(mi_archivo.readline())
+mi_archivo.close()
+
+EJERCICIO 3
+-----------
+
+Abre el archivo texto.txt e imprime únicamente la segunda línea.
+
+mi_archivo = open("texto.txt")
+linea = mi_archivo.readline()---> primera línea
+linea = mi_archivo.readline()---> segunda línea
+print(linea)
+
+CREAR Y ESCRIBIR ARCHVIOS
+-------------------------
+
+parametros de apertura.....
+
+mi_archivo = open("prueba","r")----> solo lectura
+mi_archivo = open("prueba","w")----> solo de escritura, si existe se vacia y no existe lo crea
+mi_archivo = open("prueba","a")----> solo de escritura, se situal al final del archivo, si no existe lo crea
+
+
+archivo = open('archivo1.txt','w')----> solo escritura
+----------------------------------
+archivo.write('soy el nuevo texto')---> metodo escritura
+
+Al escribir python no hace saltos de líneas por lo que habrá que incluirlas
+archivo.write('Hola\n')
+archivo.write('Mundo')
+
+Hay otra forma de hacerlo que es...
+archivo.write('''Hola
+mundo,
+aqui estoy yo
+''')
+
+hay otro metodo que es writelines()
+
+archivo.writelines(['hola','mundo','aqui','estoy'])
+
+Lo que hace es concatenar lineas de String, no es muy util
+no hace saltos de líneas sino simplemente lo mete seguido.
+
+Si quisieras hacer esto sería más interesante hacerlo mediante una lista
+
+lista=['hola','mundo','aqui','estoy']
+
+le pasamos un for y le damos el formato que deseemos
+
+for p in lista:
+    archivo.writelines( p + '\n')
+
+
+mi_archivo = open('prueba.txt','a')---> solo escritura pero se va al final del archivo
+----------------------------------
+
+archivo.write('Bienvenido')
+
+mi_archivo.close()
+
+
+EJERCICIO 1
+-----------
+
+Abre el archivo llamado "mi_archivo.txt", y cambia su contenido por el texto "Nuevo texto".
+
+Imprime el contenido completo de "mi_archivo.txt" al finalizar.
+
+Pista: deberás cerrarlo en modo escritura y volverlo a abrir en modo lectura.
+
+archivo = open('mi_archivo.txt','w')
+linea = archivo.write('Nuevo texto')
+archivo.close()
+
+archivo1 = open('mi_archivo.txt','r')
+leer = archivo1.readline()
+print(leer)
+archivo1.close()
+
+EJERCICIO 2
+------------
+
+Abre el archivo llamado "mi_archivo.txt", y añade una línea al final del mismo que diga: "Nuevo inicio de sesión".
+
+Imprime el contenido completo de "mi_archivo.txt" al finalizar.
+
+Pista: deberás cerrarlo en modo escritura y volverlo a abrir en modo lectura.
+
+archivo2 = open('mi_archivo.txt','a')
+escribe = archivo2.write('Nuevo inicio de sesión')
+archivo2.close()
+
+archivo3 = open('mi_archivo.txt','r')
+leer = archivo3.read()
+print(leer)
+archivo3.close()
+
+EJERCICIO 3
+-----------
+Utiliza el método writelines para escribir los valores de la siguiente lista al final del archivo "registro.txt" .
+Inserta un tabulador entre cada elemento de la lista para separarlos.
+
+registro_ultima_sesion = ["Federico", "20/12/2021", "08:17:32 hs", "Sin errores de carga"]
+
+Imprime el contenido completo de "registro.txt" al finalizar.
+
+Pista: recuerda que el símbolo para concatenar un tabulador en un string es \t.
+También, deberás cerrar el archivo en modo escritura y volverlo a abrir en modo lectura
+para poder imprimir su contenido.
+
+registro_ultima_sesion = ["Federico", "20/12/2021", "08:17:32 hs", "Sin errores de carga"]
+registro = open('registro.txt','w')
+for elemento in registro_ultima_sesion:
+    registro.writelines(elemento+"\t")
+registro.close()
+
+registro1 = open('registro.txt','r')
+leido = registro1.read()
+print(leido)
+registro1.close()
+
+DIRECTORIOS
+-----------
+
+hay que tener en cuenta que la ruta en windows es c:\pedro\
+en Mac es c:/pe
+
+hay que importar la libreria PATH del modulo OS
+
+ruta= os.getcwd()---> muestra la ruta actual
+ruta = os.chdir()---> hacemos una ruta alternativa
+
+ruta1 = os.chdir('C:\\Users\\pedro\\Documents\\PYTHON\\curso\\dia6')--> acuerdate poner doble \\
+archivo = open('Prueba.txt')
+print(archivo.read( ))
+Resultado---->  Soy la primera linea
+                ¡Vaya! ¡Yo soy la segunda!
+                He quedado tercera
+
+También podemos crear carpetas mediante el método .makedirs()
+
+crear = os.makedirs('C:\\Users\\pedro\\Documents\\PYTHON\\curso\\dia6\\otra')
+                                                                      --------
+
+una ruta tiene dos bases este método uno el directorio y otro el nombre del archivo
+
+También se pueden obtener estos dos elementos por separado
+
+basename()
+--------
+Nos va a devolver el archivo que buscamos
+
+#basename
+
+ruta2 = 'C:\\Users\\pedro\\Documents\\PYTHON\\curso\\dia6\prueba.txt'
+elemento = os.path.basename(ruta2)
+print(elemento)
+Resultado---> prueba.txt
+
+dirname()
+-------
+Nos va a devolver la ruta donde se ubique el archivo
+
+elemento = os.path.dirname(ruta2)
+print(elemento)
+Resultado ----> C:\Users\pedro\Documents\PYTHON\curso\dia6
+
+split()
+-------
+Nos lo separa y lo imprime en una tupla
+
+elemento = os.path.split(ruta2)
+print(elemento)
+Resultado-->('C:\\Users\\pedro\\Documents\\PYTHON\\curso\\dia6', 'prueba.txt')
+
+Eliminar carpetas
+-----------------
+os.rmdir('C:\\Users\\pedro\\Documents\\PYTHON\\curso\\dia6\\otra')--> borrará otra
+
+Abrir archivo sin usar 'os'
+---------------------------
+otro_archivo = open('C:\\Users\\pedro\\Documents\\PYTHON\\curso\\dia6\prueba.txt')
+print(otro_archivo.read())
+
+CREAR RUTAS PARA CUALQUIER SISTEMA OPERATIVO
+--------------------------------------------
+importamos el modulo pathlib del objeto Path
+
+from pathlib import Path
+
+carpeta = Path('/Users/pedro/Documents/PYTHON/curso/dia6')--> generamos la ruta no tenemos que poner la unidad
+archivo = carpeta / 'Prueba.txt'---> llamamos al archivo
+                 |_|
+      al cambiar el sentido de la barra hacemos que pueda ser leido en cualquier OS
+mi_archivo5 = open(archivo)
+print(mi_archivo5.read())
+
+se puede hacer tambien así
+carpeta = Path('/Users/pedro/Documents/PYTHON/curso/dia6') / 'Prueba.txt'
+
+PATHLIB
+-------
+
+from pathlib import Path, PureWindowsPath
+
+carpeta =Path('/Users/pedro/Documents/PYTHON/curso/dia6/Prueba.txt')
+
+print(carpeta.read_text())---> ahora carpeta es un objeto Path y tiene sus propios metodos
+              |__________|
+
+Resultado--->   Soy la primera linea
+                ¡Vaya! ¡Yo soy la segunda!
+                He quedado tercera
+
+Como tiene sus propios métodos no tenemos que utilizar open() ni read()
+
+#name nos devuelve el nombre del archivo
+print(carpeta.name)
+Resultado---->  Prueba.txt
+
+#suffix es una función como name ya que no tiene parentesis y nos dará el subfijo del archivo la extension
+print(carpeta.suffix)
+Resultado---->  .txt
+
+
+#la función stem nos dará sin la terminación
+print(carpeta.stem)
+Resultado---->  Prueba
+
+#hay un metodo que te permita si existe .exists() es booleano
+
+if not carpeta.exists():
+    print('Este archivo no existe')
+else:
+    print('Existe, genial!! ')
+
+Resultado---->  Existe, genial!!
+
+#PureWindowsPath transforma la ruta a windows
+
+ruta_windows = PureWindowsPath(carpeta)
+print(ruta_windows)
+
+Resultado ---> \Users\pedro\Documents\PYTHON\curso\dia6\Prueba.txt
+
+
+PATH
+-----
+
+Path puede convertir cualquier conjunto de String en una ruta de acceso
+mi_ruta = Path('Europa','España','Barcelona','Sagrada_familia.txt')
+print(mi_ruta)
+Resultado ---> Europa/España/Barcelona/Sagrada_familia.txt
+
+from pathlib import Path
+# esta ruta es relativa, es decir, puede estar en varios directorios, habría que especificar en cual
+guia = Path('Barcelona','Sagrada_Familia.txt')
+#print(guia)
+
+#podemos usar el método home() para obtener la ruta absoluta
+
+base = Path.home()
+#guia2 = Path('Madrid','Gran_Via.txt')
+print(base)->C:\Users\pedro
+#print(guia2)
+#guia21 = Path(base,'Madrid','Gran_Via.txt')
+#print(guia21)-->  C:\Users\pedro\Madrid\Gran_Via.txt
+
+#podemos concatear path dentro de otro path
+#guia22 = Path(base,'Europa','España',Path('Madrid','Gran_Via.txt'))
+#print(guia22)--> C:\Users\pedro\Europa\España\Madrid\Gran_Via.txt
+
+#podemos crar un objeto nuevo apuntado de otro lado distinto
+
+#guia3 = guia21.with_name("La_Pedrera.txt")
+#print(guia3)--->C:\Users\pedro\Madrid\La_Pedrera.txt
+
+
+#parent devuelve el antecesor más inmediato de la ruta por cada vez que se agregue
+#print(guia21.parent.parent)--->C:\Users\pedro
+
+
+# para enumerar todos los archivos txt de la carpeta que he creado Europa
+
+guia4 = Path(Path.home(),"Europa")
+print(guia4)
+for txt in Path(guia4).glob("*.txt"):
+    print(txt)
+
+Resultado--->   C:\Users\pedro\Europa\consejos.txt
+                C:\Users\pedro\Europa\Normativas.txt
+
+# para sacar todos los txt que haya
+
+for txt2 in Path(guia4).glob("**/*.txt"):
+    print(txt2)
+
+Resultado--->    C:\Users\pedro\Europa\consejos.txt
+                 C:\Users\pedro\Europa\Normativas.txt
+                 C:\Users\pedro\Europa\España\Barcelona\La_Pedrera.txt
+                 C:\Users\pedro\Europa\España\Barcelona\Sagrada_Familia.txt
+                 C:\Users\pedro\Europa\España\Madrid\Museo_del_Prado.txt
+                 C:\Users\pedro\Europa\Francia\Paris\Torre_Eiffel.txt
+
+
+# cuando se quiere recuperar parte de la ruta se utiliza el metodo relativeto()
+
+guia5 = Path('Mundo','Europa','Peninsula_Iberica','España','Madrid','El_Escorial','Monasterio')
+
+
+en_europa = guia5.relative_to(Path("Mundo"))
+en_espana = guia5.relative_to(Path("Mundo","Europa"))
+print(en_europa)---> Europa\Peninsula_Iberica\España\Madrid\El_Escorial\Monasterio
+print(en_espana)---> Peninsula_Iberica\España\Madrid\El_Escorial\Monasterio
+
+
+EJERCICIO 1
+------------
+
+Almacena en la variable ruta_base, un objeto Path que señale el directorio base del usuario.
+
+Recuerda importar Path del módulo pathlib, y utilizar el método home()
+
+from pathlib import Path
+
+ruta_base = Path.home()
+
+EJERCICIO 2
+-----------
+
+Implementa y crea una ruta relativa que nos permita llegar al archivo "practicas_path.py"
+a partir de la siguiente estructura de carpetas:
+"Curso Python"
+"Día 6"
+"practicas_path.py"
+
+from pathlib import Path
+
+ruta = Path("Curso Python","Día 6","practicas_path.py")
+
+EJERCICIO 3
+-----------
+Implementa y crea una ruta absoluta que nos permita llegar al archivo "practicas_path.py"
+a partir de la siguiente estructura de carpetas:
+
+"Curso Python"
+"Día 6"
+"practicas_path.py"
+
+from pathlib import Path
+
+ruta =Path(Path.home(),"Curso Python","Día 6","practicas_path.py")
+
+
+LIMPIAR LA CONSOLA
+------------------
+
+hay que importar lo siguiente:
+
+
+from os import system
+
+nombre = input("Dime tu nombre: ")
+edad = input("Dime tu edad: ")
+
+system('cls')---Mac será 'clear'
+print(f'Tu nombre es {nombre} y tienes {edad}   años')
+
+hay que cambiar la configuración del IDE (esto es para este IDE)
+
+Vamos a Run ---> edit Configurations
+
+le damos a Emulate terminal in output console y con eso ya estaría
+
+ARCHIVOS Y FUNCIONES
+--------------------
+
+EJERCICIO 1
+------------
+
+Crea una función llamada abrir_leer() que abra (open)
+un archivo indicado como parámetro, y devuelva su contenido (read).
+
+def abrir_leer(archivo):
+    leer= open(archivo)
+    return leer.read()
+
+EJERCICIO 2
+------------
+Crea una función llamada sobrescribir() que abra (open) un archivo indicado como parámetro,
+y sobrescriba cualquier contenido anterior por el texto "contenido eliminado"
+
+def sobrescribir(archivo):
+    escribir = open(archivo,'w')
+    escribir.write("contenido eliminado")
+
+EJERCICIO 3
+-----------
+
+Crea una función llamada registro_error() que abra (open) un archivo indicado como parámetro,
+y lo actualice añadiendo una línea al final que indique
+"se ha registrado un error de ejecución". Finalmente, debe cerrar el archivo abierto.
+
+
+def registro_error(archivo):
+    actualizar = open(archivo,'a')
+    actualizar.write("se ha registrado un error de ejecución")
+
+    actualizar.close()
+

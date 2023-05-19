@@ -1,0 +1,703 @@
+DIA 9
+------
+
+
+COLLECTION
+----------
+
+Modulo Counter de Collection
+
+from collections import Counter
+
+numeros =[8,9,6,5,4,4,5,5,5,8,7,4,4]
+
+print(Counter(numeros))
+
+Resultado --->  Counter({5: 4, 4: 4, 8: 2, 9: 1, 6: 1, 7: 1})
+
+Counter es una subclase de diccionario, por eso esta salida
+
+se puede contar también un String
+
+print(Counter('mississipi'))
+
+Resultado --->  Counter({'i': 4, 's': 4, 'm': 1, 'p': 1})
+
+frase = 'al pan pan y al vivo vino'
+print(Counter(frase.split()))
+Resultado ---> Counter({'al': 2, 'pan': 2, 'y': 1, 'vivo': 1, 'vino': 1})
+
+podemos utilizar varios modulos de Counter
+
+.most_common()
+
+serie = Counter([1,1,1,1,1,1,2,2,2,2,2,3,3,3,3])
+print(serie.most_common())
+
+Resultado --->[(1, 6), (2, 5), (3, 4)]
+
+print(serie.most_common(1))
+
+Resultado ---> [(1, 6)]
+
+print(serie.most_common(2))
+
+Resultado ---> [(1, 6), (2, 5)]
+
+print(list(serie))---> estamos casteando el counter para que me de los valores de la lista( valores únicos)
+Resultado --->  [1, 2, 3]
+
+
+DEFAULTDICT
+-----------
+
+mi_dic ={'uno':'verde','dos':'azul','tres':'rojo'}
+
+print(mi_dic['dos']
+Resultado ---> 'azul'
+
+pero si yo quisiera pasar una clave que no existe...
+
+print(mi_dic['seis']
+Resultado---> KeyError 'seis'---> por que no existe
+
+Esto es un problema cuando se itera con un for cuando se pasa un diccionario que pase por una lista de claves que no
+existe en tu diccionario, para eso se usa.
+
+from collections import defaultdic
+
+mi_dic = defaultdic(lamda: 'nada'
+                    \____/
+         en caso que no haya clave se le asigne el valor nada
+
+mi_dic = defaultdict(lambda:'nada')
+mi_dic['uno'] = 'verde'
+print(mi_dic['dos'])
+Resultado ---> nada
+
+print(mi_dic)
+Resultado ---> defaultdict(<function <lambda> at 0x00000262F3A33E20>, {'uno': 'verde', 'dos': 'nada'})
+
+NAMEDTUPLE
+----------
+
+Persona = namedtuple('Persona',['nombre', 'altura', 'peso'])---> creamos un objeto
+ariel = Persona('Ariel',176,79)---> nos va a pedir parametros
+
+print(ariel.altura)--> podemos imprimirlo así
+print(ariel.peso)
+
+#si quiero acceder por indice
+
+print(ariel[2])---> imprimiendo por el indice de la tupla
+
+EJERCICIO 1
+-----------
+
+Aplica un Counter (contador) sobre la lista de números entregada a continuación,
+y almacénalo en una variable llamada contador
+
+from collections import Counter
+
+lista = [1, 2, 3, 6, 7, 1, 2, 4, 5, 5, 5, 5, 3, 2, 6, 7]
+
+contador = Counter(lista)
+
+EJERCICIO 2
+-----------
+
+Crea un diccionario llamado mi_diccionario, para el cual,
+cuando no se halle una palabra clave buscada, se cargue con el string "Valor no hallado".
+
+Carga el diccionario, al menos, con el siguiente par de datos:
+
+    palabra clave = edad
+
+    valor= 44
+
+Utiliza el método defaultdict del módulo Collections.
+
+from collections import defaultdict
+
+mi_diccionario = defaultdict(lambda:'Valor no hallado')
+mi_diccionario['edad']=44
+
+EJERCICIO 3
+-----------
+
+Una cola doblemente terminada o deque (del inglés double ended queue) es una estructura de datos lineal
+que permite insertar y eliminar elementos por ambos extremos.
+
+Investiga más al respecto en cualquier sitio de documentación,
+y a continuación implementa una deque a partir del módulo collections.
+Los elementos iniciales de la lista se brindan a continuación.
+
+["Londres", "Berlin", "París", "Madrid", "Roma", "Moscú"]
+
+La lista debe tener la capacidad de incorporar elementos por la izquierda, y recibir el nombre lista_ciudades.
+
+from collections import deque
+
+lista_ciudades = deque(["Londres", "Berlin", "París", "Madrid", "Roma", "Moscú"])
+
+lista_ciudades.appendleft("Alcorcón")---> añadimos a la izquierda de la lista
+
+print(lista_ciudades)
+Resultado---->  deque(['Alcorcón', 'Londres', 'Berlin', 'París', 'Madrid', 'Roma', 'Moscú'])
+
+MODULO OS Y SHUTIL
+------------------
+
+se utilizan para mover archivos, carpetas, etc....
+
+
+import os
+
+# para saber en que directorio estamos
+
+print(os.getcwd()) #cwd directorio trabajo actual
+
+# para crear un archivo
+
+archivo = open('curso.txt','w')
+archivo.write('texto de prueba')
+archivo.close()
+
+# para ver desde aqui
+
+print(os.listdir())
+
+
+
+ eliminar archivo:
+
+        os.unlink()  #elimina archivo y ruta que le pongas
+        os.rmdir() ---> elimina carpeta vacia
+
+
+ import shutil
+
+# vamos a mover el archivo creado
+
+shutil.move('curso.txt','C:\\Users\\Usuario\\Documents\\software\\Python\\Dia8')
+
+
+
+shutil.rmtree ---> borra todo, pero cuidado.... (no va a la papelera de reciclaje
+-------------
+
+Hay un modulo fuera de python que se llama send2trash(mandar a la papelera)
+                                           -----------
+
+pip install send2trash
+
+send2trash.send2trash('C:\\Users\\Usuario\\Documents\\software\\Python\\Dia8\\curso.txt')
+
+se hace dos veces, esto lo que hace es que lo envía a la papelera de reciclaje directamente
+
+
+WALK
+-----
+
+Recorre todas las carpetas y archivos que haya en la ruta que le pongamos
+print(os.walk('C:\\Users\\Usuario\\Documents\\software\\Python'))
+Resultado ---> <generator object _walk at 0x0000017148B211C0>
+
+Para que me diga los datos le pasamos un for
+
+Walk lo que hace es almacenar 1º ruta, 2º subcarpeta que haya en su ruta y archivos
+
+for carpeta,subcarpeta,archivo in os.walk(ruta):
+    print(f"La ruta es {carpeta}")
+    print('las subcarpetas son: ')
+    for sub in subcarpeta:
+        print(f"\t {sub}")
+    print('Los archivos son:')
+    for arch in archivo:
+        if arch.startswith('Apuntes'.upper()):---> aqui mirará si hay alguna condición
+            print(f'\t {arch}')
+    print('\n')
+
+Resultado---->      La ruta es C:\Users\Usuario\Documents\software\Python\dia 9
+                    las subcarpetas son:
+	                    .idea
+	                    venv
+                    Los archivos son:
+	                    APUNTES
+
+
+
+
+DATETIME
+--------
+
+nos permite manipular el tiempo.
+
+import datetime
+
+mi_hora = datetime.time(17,35)
+
+print(type(mi_hora))
+print(mi_hora.minute)
+print(mi_hora.hour)
+
+from datetime import datetime
+
+mi_fecha = datetime.date(2025,10,17)
+
+print(mi_fecha.year)
+print(mi_fecha.ctime())
+print(mi_fecha.today())
+
+#combinamos fecha y hora
+
+mi_anuario = datetime(2025,5,12,17,33,5)
+
+mi_anuario = mi_anuario.replace(month = 11)
+print(mi_anuario)
+
+from datetime import date
+
+nacimiento = date(1949,9,25)
+defuncion = date (2022,9,16)
+
+vida = defuncion - nacimiento
+
+print(vida.days)
+
+from datetime import datetime
+
+despierta = datetime(2022,10,5,7,30)
+dormido = datetime(2022,10,5,23,45)
+
+vigilia = dormido - despierta
+
+print(vigilia)
+print(vigilia.seconds)
+
+
+EJERCICIO 1
+-----------
+
+Crea un objeto fecha llamado mi_fecha que almacene el día 3 de febrero de 1999
+
+from datetime import date
+
+mi_fecha = date(1999,2,3)
+
+EJERCICIO 2
+-----------
+
+Crea un objeto en la variable hoy que siempre almacene la fecha actual cuando sea invocada.
+
+from datetime import date
+
+hoy = date.today()
+
+EJERCICIO 3
+-----------
+
+En una variable llamada minutos, almacena únicamente los minutos de la hora actual.
+
+Por ejemplo, si se ejecutara a las 20:43:17 de la noche, la variable minutos debe almacenar el valor 43
+
+from datetime import datetime
+
+minutos = datetime.now().minute
+
+
+MEDIR EL TIEMPO
+---------------
+
+- TIME
+- TIMEIT
+
+Se utilizan para medir cuando dura un programa para ver cual es más eficiente.
+
+
+CASO CON TIME
+
+import time
+
+
+def prueba_for(numero):
+    lista=[]
+    for num in range(1,numero +1):
+        lista.append(num)
+    return lista
+
+def prueba_while(numero):
+    lista = []
+    contador =1
+    while contador <= numero:
+        lista.append(contador)
+        contador += 1
+    return lista
+
+inicio = time.time()
+prueba_for(1000000)
+final = time.time()
+print(final - inicio)
+
+RESULTADO ----> 0.07111096382141113
+
+inicio = time.time()
+prueba_while(1000000)
+final = time.time()
+print(final - inicio)
+
+RESULTADO ---->  0.09208559989929199
+
+
+CASO CON TIMEIT
+
+para casos muy breves necesitamos utilizar TIMEIT
+
+timeit.timeit()
+
+import time
+
+declaracion = '''
+prueba_for(10)
+            '''
+
+mi_setup= '''
+def prueba_for(numero):----> CODIGO FOR
+    lista=[]
+    for num in range(1,numero +1):
+        lista.append(num)
+    return lista
+'''
+
+duracion = timeit.timeit(declaracion,mi_setup,number =100000)
+print(duracion)
+
+RESULTADO --->  0.04630160000306205
+
+declaracion2 = '''
+prueba_while(10)
+            '''
+
+mi_setup2= '''
+def prueba_while(numero):
+    lista = []
+    contador =1
+    while contador <= numero:
+        lista.append(contador)
+        contador += 1
+    return lista
+'''
+
+duracion2 = timeit.timeit(declaracion2,mi_setup2,number =100000)
+print(duracion2)
+
+RESULTADO ----> 0.04535050000049523
+
+
+MATH
+----
+
+es un modulo contiene el kit completo para trabajar con números
+
+import math
+
+resultado = math.floor(3.54789524)
+print(resultado)---> 3
+
+resultado = math.ceil(3.54789852)
+print(resultado)---> 4
+
+resultado = math.log(25,5)
+print(resultado)---> 2.0
+
+resultado = math.tan(25)
+print(resultado)---> -0.13352640702153587
+
+para matematicas más avanzadas habria que importa numPy
+
+EJERCICIO 1
+-----------
+
+Obtén el logaritmo base 10 del número 25, y almacena el resultado en la variable resultado.
+
+Puedes utilizar el método math.log10()
+
+Puedes consultar el enlace anterior si quieres conocer más acerca del logaritmo decimal.
+
+import math
+
+resultado = math.log10(25)
+
+EJERCICIO 2
+-----------
+
+Obten la raíz cuadrada de pi con la constante math.pi y el método math.sqrt() .
+Almacena el resultado obtenido en la variable resultado.
+
+import math
+
+resultado = math.sqrt(math.pi)
+
+EJERCICIO 3
+-----------
+
+Encuentra el factorial de 7 y almacena el resultado en la variable resultado.
+
+El método a utilizar es factorial()
+
+import math
+
+resultado = math.factorial(7)
+
+MODULO RE
+---------
+
+Las expresiones regulares nos permite crear unos patrones para ver si se cumplen.
+
+import re
+
+EJ: queremos saber si ha introducido un numero de telefono
+
+el nº telefonico esta compuesto por: ### - ## - ## - ## número movil
+lo primero que hay que hacer es:
+
+patron = r '                                \d\d\d-\d\d-\d\d-\d\d'  ó  \d{3}-\d{2}-\d{2}-\d{2}'
+        \_/                                 marcadores de posición que corresponde a un valor de una condicion
+ hay que ponerlo para decirle                   d (digito)
+ que lo trate de otra forma este String
+
+
+
+ caracteres especiales para construir expresiones regulares son
+
+ car            descripcion                                             ejemplo
+ ---            -----------                                             -------
+ /d             digito numérico [0-9]                                   v\d.\d\d      ---> v1.02/v1.03/.....(versiones)
+ /w             caracter alfanumérico                                   w\w\w-\w\w    ---> sol-do / abc-25 /ABC-25
+ /s             Espacio en blanco                                       número\s\d\d  ---> número 15
+ /D             NO es un digito numérico                                \D\D\D\D      ---> ABCD
+ /W             NO es caracter alfanumérico                             \W\W\W        ---> +=- */?
+ /S             No es un espacio en blanco                              \S\S\S\s      ---> 123
+
+ caracteres cuantificadores
+
+ car            descripcion                                             ejemplo
+ ---            -----------                                             -------
+ +              1 o más veces                                           codigo_\d-\d+   ----> 11111111
+ {n}            se va a repetir esa cantidad de veces                   \d-\d{4}        ----> 5235
+ {n,m}          el número de repeticiones estara entre esos valores     \w{3,5}         ----> 005264456895413
+ {n, }          desde n hacia arriba                                    -\d{4, }-       ----> -000000-
+ *              0 ó más (puede repetirse 0 veces o muchas)              \w\s*\w         ----> a      b
+ ?              un caracter puede aparecer 1 o ninguna vez              casas?          ----> puede aparecer casa o casas
+
+
+
+ import re
+
+
+texto = "Si nececesitas ayuda llama al (658)-598-9977 las 24 horas al servicio de la ayuda online"
+patron ='nada'
+busqueda = re.search(patron,texto)
+print(busqueda)
+Resultado ---> None (porque no lo encuentra)
+
+patron = 'ayuda'
+
+busqueda = re.search(patron,texto)  ---> busca la palabra pero solo una vez
+print(busqueda)
+
+Resultado --->  <re.Match object; span=(15, 20), match='ayuda'>
+
+podemos utilizar varios metodos
+
+print(busqueda.span())  ---> solamente la informacion de la ubicacion
+print(busqueda.start()) ---> la ubicacion del comienzo.
+print(busqueda.end())   ---> la ubiciacion del final.
+
+para cuando existe más de una vez la misma palabra buscada
+
+busqueda = re.findall(patron,texto) ---> aparecerá todas las palabras iguales
+
+Resultado   ---> ['ayuda', 'ayuda']
+
+print(len(busqueda) ---> nos dirá cuantas veces se repite
+
+Resultado   ---> 2
+
+para ver cada hallazgo....
+for hallazgo in re.finditer(patron,texto):
+    print(hallazgo.span())
+
+Resultado   ---> (15, 20)   ---> ubicación primer 'ayuda' posición del 15 al 20
+                 (76, 81)   ---> ubicación segundo 'ayuda' posición del 76 al 81
+
+
+CONSTRUIR PATRONES MÁS ABSTRACTOS
+---------------------------------
+
+ayuda = "llama al 564-525-6588 ya mismo"
+
+patron = r'\d\d\d-\d\d\d-\d\d\d\d'
+resultado = re.search(patron,ayuda)
+
+print(resultado)
+
+Resultado   ---> <re.Match object; span=(9, 21), match='564-525-6588'>
+
+print(resultado.group())
+
+Resultado   --->    564-525-6588    Nos va a dar el telefono encontrado en esta busqueda
+
+podemos usar también esta forma
+patron = r'\d{3}-\d{3}-\d{4}'
+
+podemos compilar la busqueda
+
+patron = re.compiler(r'(\d{3})-(\d{3})-(\d{4})')    ---> hago 3 grupos que podré iterar con ellos
+print(resultado.group(2))   ---> si selecciono el 2º grupo, las variables empiezan por el 1 y no por el 0
+
+Resultado   --->    525
+
+clave = input("Clave: ")
+
+patron = r'\D{1}\w{7}'  ---> aquí le digo que el primer caracter no es un dígito y que tiene que llevar 7 caracteres mas
+
+chequear = re.search(patron,clave)
+print(chequear)
+
+OPERADORES ESPECIALES
+---------------------
+
+frase ='No atendemos los lunes por la tarde'
+
+busqueda = re.search(r'lunes|martes',frase) --->    | significa or
+print(busqueda)
+
+Resultado   ---> <re.Match object; span=(17, 22), match='lunes'>
+
+busqueda = re.search(r'....demos....',frase)    ---> podemos poner el '.' para buscar algo determinado de una palabra
+Resultado   --->    <re.Match object; span=(3, 16), match='atendemos los'>
+
+busqueda1 = re.search(r'^\D',frase) ---> ^ nos indica que estamos al principio y \D que no sea un digito
+print(busqueda1)
+Resultado   --->    <re.Match object; span=(0, 1), match='N'>
+
+busqueda2 = re.search(r'\D$',frase) ---> $ nos indica que está al final y \D que no sea un digito
+print(busqueda2)
+Resultado   --->    <re.Match object; span=(34, 35), match='e'>
+
+busqueda3 = re.findall(r'[^\s]',frase)  ---> findall(busca todo) [^\s]+ excluye todos los espacios en blanco + una o más veces
+print(busqueda3)
+Resultado   --->   ['No', 'atendemos', 'los', 'lunes', 'por', 'la', 'tarde']
+
+print(''.join(busqueda3))   ---> concatena todo el texto sin espacios en blanco
+Resultado   --->    Noatendemosloslunesporlatarde
+
+EJERCICIO 1
+-----------
+
+Crea una función llamada verificar_email para comprobar si una dirección de email es correcta, que verifique
+si el email dado como argumento contiene "@" (entre el nombre de usuario y el dominio) y finaliza en ".com"
+(aunque aceptando también casos que cuentan con un dominio adicional,
+tal como ".com.br" para el caso de un usuario de Brasil).
+
+Si se encuentra el patrón, la función debe finalizar mostrando en pantalla el mensaje "Ok",
+pero si detecta que la frase no contiene los elementos indicados, debe informarle al usuario
+"La dirección de email es incorrecta" imprimiendo el mensaje.
+
+import re
+
+def verificar_email(email):
+
+    patron = r'@\w+\.com'
+
+    busqueda = re.search(patron,email)
+
+    if busqueda:
+        print("Ok")
+    else:
+        print("La dirección de email es incorrecta")
+
+EJERCICIO 2
+-----------
+
+Crea una función llamada verificar_saludo para verificar si una frase entregada como argumento inicia
+con la palabra "Hola". Si se encuentra el patrón, la función debe finalizar mostrando el mensaje "Ok",
+pero si detecta que la frase no contiene "Hola", debe informarle al usuario "No has saludado" imprimiendo
+el mensaje en pantalla.
+
+import re
+
+def verificar_saludo(frase):
+    patron = r'^Hola'
+    verificar = re.search(patron,frase)
+
+    if verificar:
+        print("Ok")
+    else:
+        print("No has saludado")
+
+EJERCICIO 3
+-----------
+
+El código postal de una región determinada se forma a partir de dos caracteres alfanuméricos y cuatro numéricos
+a continuación (ejemplo: XX1234).
+Crea una función, llamada verificar_cp para comprobar si el código postal pasado como argumento sigue este patrón.
+Si el patrón es correcto, mostrar al usuario el mensaje "Ok", de lo contrario:
+"El código postal ingresado no es correcto".
+
+import re
+
+def verificar_cp(cp):
+    patron = r'\w{2}\d{4}'
+    verificar_cp = re.search(patron,cp)
+
+    if verificar_cp:
+        print("Ok")
+    else:
+        print("El código postal ingresado no es correcto")
+
+
+COMPRIMIR Y DESCOMPRIMIR ARCHIVOS
+---------------------------------
+
+hay dos 2 modulos para ello:
+
+    . ZIPFILE
+    . SHUTIL
+
+ZIPFILE
+-------
+import zipfile
+
+mi_zip = zipfile.ZipFile('archivo_comprimido.zip','w')  ---> como vamos a llamar al fichero y el modo(escritura para comprimir)
+
+mi_zip.write('mi_texto_A.txt')
+mi_zip.write('mi_texto_B.txt')
+
+mi_zip.close()  ---> cerramos el objeto
+
+para descomprimir
+-----------------
+
+zip_abierto = zipfile.ZipFile('archivo_comprimido.zip','r') ---> lo ponemos en lectura
+
+zip_abierto.extractall()    ---> hay la opcion de extract(), con esto nos los extrae los ficheros
+
+
+SHUTIL
+------
+
+import shutil
+
+carpeta_origen = 'C:\\Users\\Usuario\\Documents\\software\\Python\\Dia9' ---> le damos la ruta
+
+archivo_destino = 'todo_comprimido' ---> como le vamos a llamar al archivo
+shutil.make_archive(archivo_destino,'zip',carpeta_origen)   --->    nombre archivo + tipo archivo + ruta
+
+para descomprimir
+-----------------
+
+shutil.unpack_archive('todo_comprimido.zip','Extraccion','zip') ---> extraccion es la carpeta donde va a alojarse,
+                                                                     puedes incluir una ruta distinta en esa línea
+

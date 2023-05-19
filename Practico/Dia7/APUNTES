@@ -1,0 +1,873 @@
+P.O.O
+------
+Crear entorno virtual
+---------------------
+
+en terminal escribimos python -m venv env
+                       |_________________|
+se creará a la derecha una carpeta llamada venv.
+Para activarlo hay que ejecutar
+
+
+
+
+
+Comenzamos con la parte de Programación Orientada a Objetos
+
+Clase---> En POO lo que define a un objeto se le llama Clase, permite agrupar un conjunto de variable y de funciones
+          para que nuestros objetos tenga vida
+
+Ej: Un Pajaro
+
+vamos a definir diferentes caractericas: clase, tamaño, etc... (Atributos)
+Tiene un conjunto de funcionalidades:comer,volar,etc....  (Métodos)
+Y cada pajaro será distinto: Pepe, tuitty...... (Objeto)
+
+el concepto abstracto de Pájaro sería la clase y un objeto en particular sería Pepe
+
+sería una instancia de esa clase.
+
+la POO tiene 6 pilares basicos
+
+    - Herencia
+    - Polimorfismo
+    - Cohesión
+    - Abstracción
+    - Acoplamiento
+    - Encapsulamiento
+
+CLASES
+------
+
+class Pajaro: ----> recuerda que el nombre de la clase siempre irá en Mayúsuculas
+    pass -----> así la dejamos creada pero latente
+
+mi_clase = Pajaro()---> creamos nuestro objeto mi_clase que llama a la clase Pajaro()
+
+
+class Pajaro:
+    #contenido de la clase
+    pass
+    #simplemente es la definición abstracto de una clase
+
+#declaración de instancia
+mi_pajaro = Pajaro()
+
+print(mi_pajaro)---> <__main__.Pajaro object at 0x0000006754ADA810>
+print(type(mi_pajaro))----> <class '__main__.Pajaro'>
+
+mi_pajaro2 = Pajaro()
+print(mi_pajaro2) # son entidades distintas-----> <__main__.Pajaro object at 0x0000006754ADAE90>
+
+EJERCICIO 1
+-----------
+Crea una clase llamada Personaje y a continuación, crea un objeto a partir de ella, por ejemplo: harry_potter
+
+class Personaje:
+    pass
+
+harry_potter = Personaje()
+
+EJERCICIO 2
+-----------
+Crea una clase llamada Dinosaurio, y tres instancias a partir de ella:
+velociraptor, tiranosaurio_rex y braquiosaurio .
+
+class Dinosaurio:
+    pass
+
+velociraptor = Dinosaurio()
+tiranosaurio_rex = Dinosaurio()
+braquiosaurio = Dinosaurio()
+
+EJERCICIO 3
+-----------
+Crea una clase llamada PlataformaStreaming y
+crea los siguientes objetos a partir de ella: netflix, hbo_max, amazon_prime_video
+
+class PlataformaStreaming:
+    pass
+
+netflix = PlataformaStreaming()
+hbo_max = PlataformaStreaming()
+amazon_prime_video = PlataformaStreaming()
+
+ATRIBUTOS
+---------
+
+Existen 2 tipos de atributos:
+
+    - Atributos de Clase: todos tendrán esos atributos (alas, cola, pico....)
+    - Atributos de Instancia: cada uno tendrán atributos propios(color, tamaño.....)
+
+Una cosa a tener cuenta, __init__ es un metodo de constructor y cada vez que creamos una clase llama al constructor
+para decir que atributos va a tener.
+(self)---> es la instancia del objeto que estamos creando, es una convención
+(,color)--> es el parametro de entrada que se llama al crear el objeto
+class Pajaro:
+    # atributos de clase, son iguales para todas las clases de pajaros
+    alas = True
+
+    def __init__(self,parametro): #metodo constructor, con un parametro self(obligatorio) y otro que es color
+        self.atributo = parametro # self. instancia del objeto que se va a crear
+        |____________| |_________|
+          atributo      parametro
+mi_pajaro= Pajaro('negro')# se necesita que pases el parametro color
+
+print(mi_pajaro.atributo) # al hacer el objeto ten dremos los atributos de la clase en este caso color
+print(f'Mi pajaro es un {mi_pajaro.especie} y es de color{mi_pajaro.color}')
+
+# para imprimir un atributo de clase no pasan por __init__ por lo que puedo llamarlo directamente
+print(Pajaro.alas)
+#o mediante el objeto
+print(mi_pajaro.alas)
+
+EJERCICIO 1
+-----------
+Crea una clase llamada Casa, y asígnale atributos: color, cantidad_pisos.
+
+Crea una instancia de Casa, llamada casa_blanca, de color "blanco" y cantidad de pisos igual a 4.
+
+class Casa:
+    def __init__(self,color,cantidad_pisos):
+        self.color = color
+        self.cantidad_pisos = cantidad_pisos
+
+casa_blanca=Casa('blanco',4)
+
+EJERCICIO 2
+-----------
+
+Crea una clase llamada Cubo, y asígnale el atributo de clase:
+
+    caras = 6
+
+y el atributo de instancia:
+
+    color
+
+Crea una instancia cubo_rojo, de dicho color.
+
+class Cubo:
+    caras =6
+    def __init__(self,color):
+        self.color = color
+
+cubo_rojo=Cubo('rojo')
+
+EJERCICIO 3
+-----------
+
+Crea una clase llamada Personaje, y asígnale el siguiente atributo de clase:
+
+    real = False
+
+Crea una instancia llamada harry_potter con los siguientes atributos de instancia:
+
+    especie = "Humano"
+
+    magico = True
+
+    edad = 17
+
+    class Personaje:
+    real = False
+
+    def __init__(self,especie,magico,edad):
+        self.especie = especie
+        self.magico = magico
+        self.edad = edad
+
+harry_potter = Personaje('Humano','True',17)
+
+METODOS
+--------
+
+Le dan funcionalidad a las clases es muy similar a las funciones
+
+def nombre_metodo(piar) (self):---> hace referencia a cada instancia u objeto de la clase
+
+
+    def piar(self):
+        print('pio, mi color es {}'.format(self.color))
+
+    def volar(self,metros):
+        print(f'El pajaro ha volado {metros} metros')
+
+EJERCICIO 1
+-----------
+Crea una clase Perro. Dicho perro debe poder ladrar.
+
+Crea el método ladrar() y ejecútalo en una instancia de Perro. Cada vez que ladre, debe mostrarse en pantalla "Guau!".
+
+class Perro():
+
+    def ladrar(self):
+        print("Guau!")
+
+EJEERCICIO 2
+------------
+Crea una clase llamada Mago, y crea un método llamado lanzar_hechizo() (deberá imprimir "¡Abracadabra!").
+
+Crea una instancia de Mago en el objeto merlin, y haz que lance un hechizo.
+
+class Mago:
+    def lanzar_hechizo(self):
+        print("¡Abracadabra!")
+
+
+merlin = Mago()
+
+merlin.lanzar_hechizo()
+
+
+EJERCICIO 3
+-----------
+
+Crea una instancia de la clase Alarma, que tenga un método llamado postergar(cantidad_minutos).
+El método debe imprimir en pantalla el mensaje
+
+"La alarma ha sido pospuesta {cantidad_minutos} minutos"
+
+class Alarma:
+    def postergar(self,cantidad_minutos):
+        print(f"La alarma ha sido pospuesta {cantidad_minutos} minutos")
+
+
+TIPOS DE MÉTODOS
+----------------
+
+Decoradores: nos van a permitir distintos métodos
+
+-METODOS  DE INSTANCIA: Son los hechos hasta ahora
+
+    def nombre_Metodo (self):
+    Son aquellos que una vez creados pueden ser llamados en varias instancias
+        - Pueden acceder y modificar los atributos del objeto
+        - Pueden acceder a otros métodos
+        - Pueden modificar el estado de la clase
+
+-METODOS DE CLASE: se crean utilizando el decorardor @classmethod
+
+    Se declararán al principio con @
+        @classmethod
+        def mi_metodo(cls):
+            print('algo')
+
+    No estan asociadas a la instancia de la clase sino a si misma, por lo tanto, puede ser
+    llamados no solo desde una instancia de la clase sino desde la propia clase.
+
+    Estos métodos, no pueden acceder a los atributos de la instancia pero si a la de la clase
+
+-METODOS ESTATICOS: se crean utilizando el decorador @taticmethod
+
+    No aceptan por parametros self, cls.
+
+    No puede modificar ni el estado de la clase ni la de instancia, pero acepta parametros de entrada, el uso es util
+    para indicar que un método no puede modificar ni la clase ni la instancia, se pueden ver como funciones normales
+    que se usan fuera de la clase con la salvedad que está ligado con una clase concreta
+
+     #metodo de instancia que afecta al método self
+    def piar(self):
+        print('pio, mi color es {}'.format(self.color))
+
+    def volar(self,metros):
+        print(f'El pajaro ha volado {metros} metros')
+        self.piar()
+
+    def pintar_negro(self):
+        self.color = 'negro'
+        print('Ahora el pajaro es {}'.format(self.color))
+
+    #metodos de clase
+    @classmethod
+    def poner_huevos(cls, cantidad):
+        print(f'Puso {cantidad} de huevos')
+        cls.alas = False
+        print(Pajaro.alas)
+
+    # metodos estaticos
+
+    @staticmethod
+    def mirar():
+        #self.color= 'rojo'
+        print('El pajaro mira')
+
+
+
+piolin = Pajaro('amarillo','canario')
+
+#metodos de instancia
+piolin.piar()
+piolin.pintar_negro()
+piolin.volar(50)
+piolin.alas = False
+print(piolin.alas)
+
+#metodos de clase
+Pajaro.poner_huevos(3) #hay que recordar que se hace la llamada a la clase no al objeto
+
+#metodos estaticos
+Pajaro.mirar()
+
+EJERCICIO 1
+-----------
+
+Crea un método estático respirar() para la clase Mascota. Cuando se llame, debe imprimir en pantalla "Inhalar... Exhalar"
+
+class Mascota:
+    @staticmethod
+    def respirar():
+        print("Inhalar... Exhalar")
+
+EJERCICIO 2
+-----------
+Crea un método de clase revivir() que actúa sobre el atributo de clase vivo de la clase Jugador,
+estableciéndolo en True cada vez que es invocado. El valor predeterminado del atributo vivo, debe ser False.
+
+class Mascota:
+    @staticmethod
+    def respirar():
+        print("Inhalar... Exhalar")
+
+EJERCICO 3
+----------
+Crea un método de instancia lanzar_flecha() que reste en -1 la cantidad de flechas
+que tiene una instancia de Personaje, que cuenta con un atributo de instancia de tipo número, llamado cantidad_flechas.
+
+class Personaje:
+    def __init__ (self,cantidad_flechas):
+        self.cantidad_flechas = cantidad_flechas
+    def lanzar_flecha(self):
+        self.cantidad_flechas -= 1
+
+
+HERENCIA
+--------
+
+Una clase hija hereda atributos de una clase Padre, puede modificar dichos atributos o crear algunos nuevos
+
+Se utiliza cuando tengan clases que parecen entre sí pero tienen sus propias peculariedades
+
+Metodos como nacer, respirar, morir..... en vez de crear los mismos atributos podemos hacer que los hereden de la misma
+clase
+
+EJ:
+
+class Animal:           \
+    def nacer(self):      \
+    def morir(self):        \
+    def respirar(self):      |
+                             |  Filosofia DRY
+class Pajaro(Animal):        |  Don't
+    (codigo)                 |  Repeat
+                             |  Yourself
+class Mamifero(Animal):      |
+       (codigo)              /
+                            /
+class Insecto(Animal):     /
+       (codigo)           /
+
+Contra más codigo repitas mayor será la dificultad para luego poder corregir errores
+
+class Animal:
+
+    def __init__(self,edad, color):
+        self.edad = edad
+        self.color = color
+
+    def nacer(self):
+        print("Este animal ha nacido")
+
+class Pajaro(Animal): #hereda de animal
+    pass
+
+print(Pajaro.__bases__)
+print(Animal.__subclasses__())
+
+piolin = Pajaro(2,'amarillo')---> aqui llamamos a la clase Pajaro, no Animal
+piolin.nacer()---> tiene todos los métodos declarados en Animal
+print(piolin.color)
+
+EJERCICIO 1
+-----------
+
+Crea una clase llamada Persona, que tenga los siguientes atributos
+de instancia: nombre, edad. Crea otra clase, Alumno, que herede de la primera estos atributos.
+
+class Persona:
+    def __init__(self,nombre,edad):
+        self.nombre = nombre
+        self.edad = edad
+
+class Alumno(Persona):
+    pass
+
+EJERCICIO 2
+-----------
+
+Crea una clase llamada Mascota, que tenga los siguientes atributos de instancia:
+edad, nombre, cantidad_patas. Crea otra clase, Perro, que herede de la primera sus atributos.
+
+class Mascota:
+    def __init__(self,edad,nombre,cantidad_patas):
+        self.edad = edad
+        self.nombre = nombre
+        self.cantidad_patas = cantidad_patas
+
+class Perro(Mascota):
+    pass
+
+EJERCICIO 3
+-----------
+
+Crea una clase llamada Vehiculo, que contenga los métodos acelerar() y frenar() (puedes dejar el código
+de los métodos en blanco con pass). Crea una clase llamada Automovil que herede estos métodos de Vehiculo.
+
+class Vehiculo:
+    def acelerar(self):
+        pass
+    def frenar(self):
+        pass
+
+class Automovil(Vehiculo):
+    pass
+
+
+HERENCIA EXTENDIDA
+------------------
+
+Cuando la clase hija hereda de la clase Padre, no significa que tenga los mismos métodos, puede que la clase hija puede
+tener 3 tipos de métodos:
+
+    - Los métodos heredados exactamente iguales a los del padre
+    - Los métodos propios
+    - Los métodos heredados modificados por la clase hija
+
+Los atributos sucede igual:
+    - Puede heredarlos
+    - Puede tener los suyos propios
+
+La herencia múltiple significa que puede heredar de varias clases al mismo tiempo, y si tiene una clase hija
+puede tener los mismos atributos y metodos del padre.
+
+
+Puede hablar un problema con esta herencia mútiple:
+
+ class Animal:
+
+    #si tiene una clase hablar....
+    def hablar(self):
+        print('hola')
+
+ class Pajaro(Animal):
+    # la clase Pajaro modifica el método de hablar...
+    def hablar(self):
+        print('Pio')
+
+class Canario(Pajaro):
+    #Hereda los métodos de Pajaro...., que método hereda el de Animal o el de Pajaro?
+    pass
+
+
+ass Animal:
+
+    def __init__(self,edad, color):
+        self.edad = edad
+        self.color = color
+
+    def nacer(self):
+        print("Este animal ha nacido")
+
+    def hablar(self):
+        print("Este animal emite un sonido")
+
+class Pajaro(Animal): #hereda de animal
+
+    #puede tener atributos propios (2 maneras), 1º
+    def __init__ (self,edad,color,altura_vuelo):
+        #self.edad = edad # 1º metodo
+        #self.color = color 1º método
+        super().__init__(edad,color)
+        self.altura_vuelo = altura_vuelo
+
+    # tenemos este método
+    def hablar(self):
+        print('pio')
+    def volar(self,metros):
+        print(f'El pajaro vuela {metros} metros')
+
+
+
+print(Pajaro.__bases__)
+print(Animal.__subclasses__())
+
+# objeto clase hija
+piolin =Pajaro(3,'amarillo',40)
+
+#objeto clase Padre
+mi_animal = Animal(5,'negro')
+
+#métodos heredados
+piolin.nacer()
+piolin.hablar() #metodo sobreescrito por hablar de la clase Pajaro()
+#método propio
+piolin.volar(50)
+
+
+#Herencia Multiple
+
+class Padre:
+    def hablar(self):
+        print('Hola')
+
+class Madre:
+    def reir(self):
+        print('JAJAJA')
+
+    def hablar(self):
+        print('¿que tal?')
+
+class Hijo(Padre,Madre): # se hereda 1º izquierda y luego derecha
+    pass
+
+class Nieto(Hijo):
+    pass
+
+mi_nieto = Nieto()
+
+mi_nieto.reir()
+mi_nieto.hablar()
+
+print(Nieto.__mro__) #orden de resolución de métodos
+
+EJERCICIO 1
+-----------
+
+Si la clase Hija ha heredado de su padre la forma de reir,
+y de su madre la vocación, y hoy tienen el mismo trabajo en la Fiscalía,
+crea la herencia múltiple que le permita a esta clase heredar correctamente de Padre y Madre.
+
+Completa el código suministrado a continuación para lograrlo.
+
+class Padre():
+    def trabajar(self):
+        print("Trabajando en el Hospital")
+
+    def reir(self):
+        print("Ja ja ja!")
+
+class Madre():
+    def trabajar(self):
+        print("Trabajando en la Fiscalía")
+
+class Hija(Madre,Padre):--> de madre hereda el método heredar
+    pass                \--> de Padre hereda el método reir
+
+EJERCICIO 2
+-----------
+
+"El ornitorrinco es una de las criaturas más raras del mundo: aunque es un mamífero, pone huevos;
+y amamanta a sus crías pero no tienen mamas." (National Geographic)
+
+Crea una clase Ornitorrinco que herede de otras clases: Vertebrado,
+Pez, Reptil, Ave y Mamifero, tal que "construyas" un animal que tiene los siguientes métodos y atributos:
+
+- poner_huevos()
+
+- tiene_pico = True
+
+- vertebrado = True
+
+- venenoso = True
+
+- nadar()
+
+- caminar()
+
+- amamantar()
+
+class Vertebrado:
+    vertebrado = True
+
+class Ave(Vertebrado):
+    tiene_pico = True
+    def poner_huevos(self):
+        print("Poniendo huevos")
+
+class Reptil(Vertebrado):
+    venenoso = True
+
+class Pez(Vertebrado):
+    def nadar(self):
+        print("Nadando")
+    def poner_huevos(self):
+        print("Poniendo huevos")
+
+class Mamifero(Vertebrado):
+    def caminar(self):
+        print("Caminando")
+    def amamantar(self):
+        print("Amamantando crías")
+
+class Ornitorrinco(Ave,Reptil,Pez,Mamifero):
+   pass
+
+EJERCICIO 3
+-----------
+
+Un hijo ha heredado de su padre todas sus características, sin embargo, tienen diferentes hobbies.
+Logra que la clase Hijo herede de Padre todos sus métodos y atributos,
+sobreescribiendo el método hobby() para que se devuelva[1]: "Juego videojuegos en mi tiempo libre"
+
+
+[1]: asegúrate de utilizar return seguido de una cadena de texto
+
+class Padre():
+    color_ojos = "marrón"
+    tipo_pelo = "rulos"
+    altura = "media"
+    voz = "grave"
+    deporte_preferido = "tenis"
+    def reir(self):
+        return "Jajaja"
+    def hobby(self):
+        return "Pinto madera en mi tiempo libre"
+    def caminar(self):
+        return "Caminando con pasos largos y rápidos"
+
+class Hijo(Padre):
+    def hobby(self): ---> sobreescribe el método del Padre
+        return "Juego videojuegos en mi tiempo libre"
+
+
+POLIMORFISMO
+------------
+
+Hace referencia a que los objetos puede tomar diferentes formas
+
+Objetos de diferentes clases pueden tener el mismo nombre de método pero aplicado a diferentes objetos.
+
+class Vaca:
+    def __init__(self,nombre):
+        self.nombre = nombre
+    def hablar(self): -----> metodo común en ambas clases
+        print(self.nombre +" Muuuu")
+
+class Oveja:
+    def __init__(self,nombre):
+        self.nombre = nombre
+    def hablar(self): -----> metodo común en ambas clases
+        print(self.nombre +" Beee")
+
+
+mi_vaca =Vaca('Lola') ---> Objeto de la clase Vaca---> 'Lola Muuuu'
+mi_oveja= Oveja('Claudia') ---> Objeto de la clase Oveja---> 'Claudia Beee'
+
+animales =[mi_vaca,mi_oveja]--> creamos una lista
+
+for animal in animales:
+    animal.hablar()# en una iteración se hace llamar al método hablar aunque sea de distintas clases
+
+def animal_hablar(animal):
+    animal.hablar()
+
+animal_hablar(mi_vaca)----> 'Lola Muuuu'
+animal_hablar(mi_oveja) ----->'Claudia Beee'
+
+EJERCICIO 1
+-----------
+
+La función incorporada en Python len() tiene un comportamiento polimórfico,
+ya que calcula el largo de un objeto en función de su tipo (strings, listas, tuples, entre otros),
+devolviendo la cantidad de items o caracteres que lo componen.
+
+Crea un iterador que recorra los siguientes objetos:
+palabra, lista, tupla y muestre en pantalla (print()) para cada uno de ellos su longitud con la función len().
+
+Puedes recordar cómo implementar la función len() siguiente
+enlace: https://docs.aws.amazon.com/es_es/redshift/latest/dg/r_LEN.html
+
+palabra = "polimorfismo"
+lista = ["Clases", "POO", "Polimorfismo"]
+tupla = (1, 2, 3, 80)
+contador = 0
+contador1 = 0
+contador2 = 0
+for elemento in range(len(palabra)):
+    contador += 1
+
+for elemento in range(len(lista)):
+    contador1 += 1
+
+for elemento in range(len(tupla)):
+    contador2 += 1
+
+print(contador)
+print(contador1)
+print(contador2)
+
+EJERCICIO 2
+-----------
+Cuentas con tres clases de personajes en un juego, los cuales cuentan con sus métodos de ataque específicos.
+
+Crea un iterador que logre un ataque conjugado en el siguiente orden: Arquero, Mago, Samurai,
+llamando al método atacar() de cada uno de los personajes. Deberás crear instancias de cada una de las
+clases anteriores para construir un iterable (una lista llamada personajes) que pueda recorrese en dicho orden.
+
+class Mago():
+    def atacar(self):
+        print("Ataque mágico")
+
+class Arquero():
+    def atacar(self):
+        print("Lanzamiento de flecha")
+
+class Samurai():
+    def atacar(self):
+        print("Ataque con katana")
+
+mago = Mago()
+arquero = Arquero()
+samurai = Samurai()
+
+personajes =[arquero,mago,samurai]
+
+for elemento in personajes:
+    elemento.atacar()
+
+EJERCICIO 3
+-----------
+Tienes tres clases de personajes en un juego, los cuales cuentan con sus métodos de defensa específicos.
+
+Crea una función llamada personaje_defender(), que pueda recibir un objeto
+(una instancia de las clases de tus personajes), y ejecutar su método defender()
+independientemente de qué tipo de personaje se trate.
+
+class Mago():
+    def defender(self):
+        print("Escudo mágico")
+
+class Arquero():
+    def defender(self):
+        print("Esconderse")
+
+class Samurai():
+    def defender(self):
+        print("Bloqueo")
+
+mago = Mago()
+arquero = Arquero()
+samurai = Samurai()
+
+def personaje_defender(personaje):
+    personaje.defender()
+
+
+COHESION
+--------
+https://escueladirecta-blog.blogspot.com/2021/09/cohesion-pilares-de-la-programacion.html
+
+ACOPLAMIENTO
+------------
+https://escueladirecta-blog.blogspot.com/2021/10/acoplamiento-pilares-de-la-programacion.html
+
+ABSTRACCION
+-----------
+https://escueladirecta-blog.blogspot.com/2021/10/abstraccion-pilares-de-la-programacion.html
+
+ENCAPSULAMIENTO
+---------------
+https://escueladirecta-blog.blogspot.com/2021/10/encapsulamiento-pilares-de-la.html
+
+METODOS ESPECIALES
+------------------
+
+__init__
+__mro__
+__bases__
+
+Todos estos son método especiales
+
+mi_lista =[1,1,1,1,1,1]
+print(len(mi_lista))
+
+class Objeto():
+  pass
+
+mi_objeto = Objeto()
+print(mi_objeto)
+
+class CD:
+    def __init__(self,autor,titulo,canciones):
+        self.autor = autor
+        self.titulo = titulo
+        self.canciones = canciones
+
+    def __str__(self): # este metodo especial hace que ayuda a definir en que se manifieste un str cuando un metodo
+                       #lo necesite
+        return f"Album: {self.titulo} de {self.autor}"
+
+    def __len__(self):
+        return self.canciones
+
+    def __del__(self):
+        print("Se ha eliminado el cd") # cuando se utilice el método del saldrá por pantalla esto.
+
+mi_cd = CD('pink floyd','walk',24)
+print(mi_cd)# normalmente si hago esta llamada me saldrá... <__main__.Objeto object at 0x00000202A02B4150>
+Resultado ----> Album: Walk de Pink Floyd
+print(len(mi_cd)) # dará este error TypeError: object of type 'CD' has no len()
+Resultado ---->  24
+
+# hay otro metodo que se llama del
+
+del  mi_cd #borrará el objeto mi_cd, pero no sabemos si lo ha hecho o no
+
+Resultado -----> Se ha eliminado el cd
+
+EJERCICIO 1
+-----------
+
+Dada la clase Libro, implementa el método especial __str__ para que cada vez que se imprima el objeto,
+devuelva '"{titulo}", de {autor}' (atención: el título debe estar encerrado entre comillas dobles).
+
+class Libro():
+    def __init__(self, titulo, autor, cantidad_paginas):
+        self.titulo = titulo
+        self.autor = autor
+        self.cantidad_paginas = cantidad_paginas
+
+    def __str__(self):
+            return f'"{self.titulo}", de {self.autor}'
+
+EJERCICIO 2
+-----------
+
+Dada la clase Libro, implementa el método especial __len__ para que cada vez que se
+ejecute la función len() sobre el mismo, devuelva el número de páginas como número entero.
+
+class Libro():
+    def __init__(self, titulo, autor, cantidad_paginas):
+        self.titulo = titulo
+        self.autor = autor
+        self.cantidad_paginas = cantidad_paginas
+
+    def __len__(self):
+        return self.cantidad_paginas
+
+EJERCICIO 3
+-----------
+
+Dada la clase Libro, implementa el método especial __del__ para que el usuario
+sea informado con el mensaje "Libro eliminado", mostrándolo en pantalla cada vez que el libro se elimine.
+
+class Libro():
+    def __init__(self, titulo, autor, cantidad_paginas):
+        self.titulo = titulo
+        self.autor = autor
+        self.cantidad_paginas = cantidad_paginas
+
+    def __del__(self):
+        print('Libro eliminado')
+
