@@ -193,7 +193,7 @@ def pedir_cosas():
             hablar(pyjokes.get_joke('es'))
             continue
         elif 'mensaje' in pedido:
-            mensaje = pywhatkit.sendwhatmsg('telefono','mensaje',time_hour=datetime.now,time_min=1,wait_time=15)
+            mensaje = pywhatkit.sendwhatmsg_instantly('telefono','mensaje') # envio por whatsapp
             continue
         elif 'precio de las acciones' in pedido:
             accion = pedido.split('de')[-1].strip()
